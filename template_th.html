@@ -1,0 +1,765 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0"><title>กำกับผลงานชดเชย ทั้งประเทศ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f3f5f7; --surface:#ffffff; --surface-2:#f8f9fb; --line:#dfe3e8; --line-2:#eceff2;
+  --ink:#14191f; --ink-2:#4b5563; --ink-3:#7b8592;
+  --blue:#2a78d6; --blue-ink:#1c5cae; --hi:#eb6834; --heat:#2a78d6; --ring:#ffffff;
+  --shadow:0 1px 2px rgba(20,25,31,.06); --mix:48%;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#101317; --surface:#181c21; --surface-2:#1d2228; --line:#2c333b; --line-2:#242a31;
+    --ink:#eef1f4; --ink-2:#b4bcc6; --ink-3:#88919c;
+    --blue:#3987e5; --blue-ink:#7db2f2; --hi:#d95926; --heat:#3987e5; --ring:#181c21;
+    --shadow:none; --mix:42%;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#101317; --surface:#181c21; --surface-2:#1d2228; --line:#2c333b; --line-2:#242a31;
+  --ink:#eef1f4; --ink-2:#b4bcc6; --ink-3:#88919c;
+  --blue:#3987e5; --blue-ink:#7db2f2; --hi:#d95926; --heat:#3987e5; --ring:#181c21;
+  --shadow:none; --mix:42%;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "IBM Plex Sans Thai","Noto Sans Thai","Sarabun",system-ui,sans-serif;padding-inline:16px;padding-block:0 40px}
+.wrap{max-width:1400px;margin:0 auto}
+header.top{padding-block:18px 10px;display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;justify-content:space-between}
+nav.suite{display:flex;flex-wrap:wrap;gap:8px;padding-block:2px 12px}
+nav.suite a{font-size:12.5px;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;text-decoration:none;line-height:1.25;transition:border-color .12s,color .12s}
+nav.suite a:hover{border-color:var(--blue);color:var(--blue-ink)}
+nav.suite a[aria-current="page"]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;cursor:default}
+h1{font-size:22px;line-height:1.25;margin:0;font-weight:700;letter-spacing:-.005em;text-wrap:balance}
+.sub{color:var(--ink-2);font-size:13px;margin:2px 0 0}
+.asof{color:var(--ink-3);font-size:12px}
+nav.tabs{display:flex;flex-wrap:wrap;gap:6px}
+nav.tabs button{font:inherit;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;min-width:150px;flex:1 1 190px;max-width:290px;line-height:1.3}
+nav.tabs button b{display:block;font-size:13px;font-weight:600}
+nav.tabs button small{display:block;font-size:11px;color:var(--ink-3);font-weight:400}
+nav.tabs button:hover{border-color:var(--blue)}
+nav.tabs button[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+nav.tabs button[aria-selected=true] small{color:rgba(255,255,255,.82)}
+.bar{background:var(--bg);padding-block:12px 8px;margin-top:8px;border-bottom:1px solid var(--line)}
+.ctls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end}
+.ctl{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ctl[hidden]{display:none!important}
+.ctl>label,.ctl>span.l{font-size:11px;color:var(--ink-3);letter-spacing:.02em}
+select,input[type=search]{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;min-height:34px;max-width:100%}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+select optgroup{font-weight:700;color:var(--ink)}
+#fp,#fl{width:min(190px,100%)} #fg{width:min(250px,100%)} #metric{width:min(430px,100%)} #item{width:min(400px,100%)} #cdim,#part{width:min(250px,100%)} #hosp{width:min(300px,100%)} #dsrc{width:min(300px,100%)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:13px;color:var(--ink-2);background:transparent;border:0;padding:6px 11px;min-height:34px;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--blue);color:#fff}
+.ctx{margin:10px 0 0;color:var(--ink-2);font-size:12.5px}
+.ctx b{color:var(--ink);font-weight:600}
+.ctx .src{display:block;color:var(--ink-3);margin-top:2px}
+section#main{padding-top:14px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 32px;margin-bottom:14px}
+.stat .v{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .v small{font-size:13px;font-weight:400;color:var(--ink-3)}
+.stat .k{font-size:12px;color:var(--ink-3)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.scroll{overflow:auto;max-width:100%;max-height:min(74vh,900px)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap;vertical-align:middle}
+th{position:sticky;top:0;z-index:3;background:var(--surface-2);font-weight:600;font-size:12px;color:var(--ink-2);border-bottom:1px solid var(--line);white-space:normal;line-height:1.3;vertical-align:bottom}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--ink)}
+th .arr{color:var(--blue-ink)}
+th.prim{color:var(--ink)}
+td.t,th.t{text-align:left}
+tr.gh td{background:var(--surface-2);font-weight:600;font-size:12.5px;color:var(--ink-2);text-align:left}
+tbody tr:hover td:not([data-hc]){background:color-mix(in srgb,var(--blue) 6%,var(--surface))}
+tr.mark td:not([data-hc]){background:color-mix(in srgb,var(--hi) 12%,var(--surface))}
+tr.tot td{font-weight:600}
+td.name{white-space:normal;min-width:150px}
+a.lnk{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--ink-3);cursor:pointer}
+a.lnk:hover{color:var(--blue-ink)}
+.rk{font-weight:600}.rk small{font-weight:400;color:var(--ink-3);margin-left:1px}
+.dim{color:var(--ink-3)}
+.pos-up{color:var(--blue-ink)} .pos-dn{color:var(--ink-2)}
+td.hc{font-weight:600}
+/* strip */
+.track{position:relative;height:26px;min-width:260px;width:100%}
+.track:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+.dot{position:absolute;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--blue);opacity:.72;box-shadow:0 0 0 1.5px var(--ring);cursor:default}
+.dot:hover{opacity:1;z-index:4}
+.dot.sel{background:var(--hi);opacity:1;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;z-index:3}
+.med{position:absolute;top:3px;bottom:3px;width:2px;margin-left:-1px;background:var(--ink);border-radius:1px}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);font-weight:400}
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:center;font-size:12px;color:var(--ink-2);margin:0 0 10px}
+.legend .sw{display:inline-block;vertical-align:-1px;margin-right:6px}
+.sw.d{width:9px;height:9px;border-radius:50%;background:var(--blue)}
+.sw.m{width:2px;height:12px;background:var(--ink)}
+.sw.s{width:9px;height:9px;border-radius:50%;background:var(--hi)}
+.grad{display:inline-block;width:130px;height:10px;border-radius:5px;background:linear-gradient(90deg,rgb(217,83,79),rgb(242,201,76),rgb(58,167,109));vertical-align:middle;margin:0 6px}
+/* matrix */
+table.mx th.h{min-width:124px;max-width:140px;text-align:center}
+table.mx td.c{text-align:center;padding:5px 8px;min-width:124px}
+table.mx td.c b{font-weight:500;font-size:13px;display:block;line-height:1.25}
+table.mx td.c i{font-style:normal;font-size:11px;color:var(--ink-2)}
+table.mx td.c.z{color:var(--ink-3);background:var(--surface)}
+table.mx td.f,table.mx th.f{position:sticky;left:0;z-index:2;background:var(--surface);text-align:left;white-space:normal;width:240px;min-width:240px;max-width:240px;border-right:1px solid var(--line)}
+table.mx th.f{z-index:4;background:var(--surface-2)}
+table.mx td.g{background:var(--surface-2);min-width:130px;font-weight:500}
+.note{color:var(--ink-2);font-size:12.5px;margin:10px 0 0;max-width:110ch}
+.empty{padding:26px 18px;color:var(--ink-2)}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);margin-left:6px}
+.tag.warn{border-color:var(--hi);color:var(--hi)}
+.hhead{display:flex;flex-wrap:wrap;gap:6px 28px;margin-bottom:12px;align-items:baseline}
+.hhead h2{margin:0;font-size:18px;font-weight:600}
+.hhead span{color:var(--ink-2);font-size:13px}
+h3.sec{font-size:15px;font-weight:600;margin:22px 0 8px}
+.ptrack{position:relative;width:120px;height:16px;display:inline-block;vertical-align:middle}
+.ptrack:before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--line);border-radius:1px}
+.ptrack:after{content:"";position:absolute;left:50%;top:3px;bottom:3px;width:1px;background:var(--ink-3)}
+.ptrack i{position:absolute;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--hi);box-shadow:0 0 0 1.5px var(--surface)}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;line-height:1.45;padding:6px 9px;border-radius:6px;white-space:pre-line;max-width:300px;display:none}
+footer{margin-top:22px;color:var(--ink-3);font-size:12px;max-width:120ch}
+footer p{margin:4px 0}
+footer p.credit{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink-2)}
+footer p.credit a{color:var(--blue-ink);text-decoration:none}
+footer p.credit a:hover{text-decoration:underline}
+@media (max-width:640px){h1{font-size:19px}.stat .v{font-size:19px}.ctls{gap:8px 10px}nav.tabs{flex-wrap:nowrap;overflow-x:auto}nav.tabs button{min-width:150px;flex:0 0 auto}}
+@media (prefers-reduced-motion:no-preference){.dot{transition:transform .12s}.dot:hover{transform:scale(1.35)}}
+
+/* focus */
+tr.focus td{border-top:2px solid var(--hi);border-bottom:2px solid var(--hi)}
+tr.focus td:first-child{border-left:2px solid var(--hi)}
+tr.focus td:last-child{border-right:2px solid var(--hi)}
+tr.focus td:not([data-hc]){background:color-mix(in srgb,var(--hi) 12%,var(--surface))}
+table.mx th.fc,table.mx td.fc{position:sticky;left:240px;z-index:2;border-left:2px solid var(--hi);border-right:2px solid var(--hi)}
+table.mx th.fc{z-index:4;border-top:2px solid var(--hi);background:color-mix(in srgb,var(--hi) 14%,var(--surface-2));color:var(--ink)}
+table.mx td.fcl{border-bottom:2px solid var(--hi)}
+.tag.hi{border-color:var(--hi);color:var(--hi);margin-left:0;margin-right:6px}
+/* combo */
+.combo{position:relative;width:min(330px,100%)}
+.combo input{width:100%;padding-right:30px}
+.combo .clr{position:absolute;right:3px;top:3px;border:0;background:none;color:var(--ink-3);cursor:pointer;font-size:18px;line-height:1;padding:5px 7px}
+.combo .clr:hover{color:var(--ink)}
+.combo ul{position:absolute;z-index:40;left:0;top:100%;margin:2px 0 0;padding:4px;list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.2);max-height:290px;overflow:auto;min-width:min(360px,86vw)}
+.combo li{padding:6px 9px;border-radius:5px;cursor:pointer;font-size:13px;white-space:nowrap}
+.combo li.on,.combo li:hover{background:color-mix(in srgb,var(--blue) 15%,var(--surface))}
+.combo li b{font-variant-numeric:tabular-nums;margin-right:8px;font-weight:600}
+.combo li small{color:var(--ink-3);margin-left:8px}
+.combo li.none{cursor:default;color:var(--ink-3)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chips[hidden]{display:none}
+.chip{display:inline-flex;gap:4px;align-items:center;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 5px 3px 11px}
+.chip button{border:0;background:none;color:var(--ink-3);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
+.chip button:hover{color:var(--ink)}
+.chip .cd{color:var(--ink-3);font-variant-numeric:tabular-nums;margin-right:2px}
+.pinnote{color:var(--hi);font-size:12.5px;margin:0 0 8px}
+.dl{font-size:11.5px;color:var(--blue-ink);cursor:pointer;margin-left:6px;white-space:nowrap}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div>
+    <h1>กำกับผลงานการชดเชยรายกองทุน โรงพยาบาลรัฐทั้งประเทศ</h1>
+    <p class="sub" id="hsub"></p>
+  </div>
+  <div class="asof" id="hasof"></div>
+</header>
+
+<nav class="suite" aria-label="แดชบอร์ดชุดวิเคราะห์">
+  <a href="https://drkulapol.github.io/planfin-analysis/" target="_blank" rel="noopener">วิเคราะห์ Planfin เขต 1</a>
+  <a href="https://drkulapol.github.io/mishos-rh1/" target="_blank" rel="noopener">วิเคราะห์ รายรับรายกองทุน เขต 1</a>
+  <a href="https://drkulapol.github.io/mishos-th/" target="_blank" rel="noopener" aria-current="page">วิเคราะห์ รายรับรายกองทุน ทั้งประเทศ</a>
+  <a href="https://drkulapol.github.io/quickmethod/dashboard.html" target="_blank" rel="noopener">วิเคราะห์ รายรับ-จ่ายทางบัญชี เขต 1</a>
+  <a href="https://drkulapol.github.io/cmi-rh1/index.html" target="_blank" rel="noopener">วิเคราะห์ CMI รายโรค/กลุ่ม ADJRW &lt; 0.5 เขต 1</a>
+</nav>
+
+<nav class="tabs" role="tablist" id="tabs" aria-label="แหล่งข้อมูล"></nav>
+
+<div class="bar">
+  <div class="ctls">
+    <div class="ctl" id="c-mode"><span class="l">กลุ่มเปรียบเทียบ</span>
+      <div class="seg" id="mode" role="group" aria-label="กลุ่มเปรียบเทียบ">
+        <button type="button" data-v="filter" aria-pressed="true">ตามตัวกรอง</button>
+        <button type="button" data-v="custom" aria-pressed="false">เลือก รพ. เอง</button>
+      </div></div>
+    <div class="ctl" id="c-fr"><label for="fr">เขตสุขภาพ</label><select id="fr"></select></div>
+    <div class="ctl" id="c-fp"><label for="fp">จังหวัด</label><select id="fp"></select></div>
+    <div class="ctl" id="c-fl"><label for="fl">ขนาด (A–F3)</label><select id="fl"></select></div>
+    <div class="ctl" id="c-fg"><label for="fg">กลุ่มระดับบริการ (GroupName)</label><select id="fg"></select></div>
+    <div class="ctl" id="c-add"><label for="add-in">เพิ่ม รพ. เข้ากลุ่มเปรียบเทียบ</label>
+      <div class="combo"><input id="add-in" type="text" placeholder="พิมพ์รหัสหรือชื่อ รพ." autocomplete="off" role="combobox" aria-expanded="false" aria-controls="add-ls"><ul id="add-ls" role="listbox" hidden></ul></div></div>
+    <div class="ctl" id="c-focus"><label for="focus-in">โฟกัส รพ. (ปักหมุดไว้ซ้าย/บนสุด พร้อมกรอบ)</label>
+      <div class="combo"><input id="focus-in" type="text" placeholder="พิมพ์รหัสสถานบริการหรือชื่อ รพ." autocomplete="off" role="combobox" aria-expanded="false" aria-controls="focus-ls"><button type="button" class="clr" id="focus-clr" aria-label="ล้างโฟกัส" hidden>×</button><ul id="focus-ls" role="listbox" hidden></ul></div></div>
+  </div>
+  <div class="chips" id="chips" hidden></div>
+  <div class="ctls" style="margin-top:12px">
+    <div class="ctl" id="c-metric"><label for="metric">วิเคราะห์แบบ</label><select id="metric"></select></div>
+    <div class="ctl" id="c-cdim"><label for="cdim">เทียบระหว่างกลุ่มตาม</label>
+      <select id="cdim"><option value="r">ตามเขตสุขภาพ</option><option value="p">ตามจังหวัด</option><option value="l" selected>ตามขนาด (A–F3)</option><option value="g">ตามกลุ่มระดับบริการ (GroupName)</option></select></div>
+    <div class="ctl" id="c-item"><label for="item" id="item-l">กองทุน</label><select id="item" style="width:min(400px,100%)"></select></div>
+    <div class="ctl" id="c-part"><label for="part">ประเภทผู้ป่วย</label><select id="part" style="width:min(250px,100%)"></select></div>
+    <div class="ctl" id="c-view"><span class="l">มุมมอง</span>
+      <div class="seg" id="view" role="group" aria-label="มุมมอง">
+        <button type="button" data-v="rk" aria-pressed="true">อันดับ รพ.</button>
+        <button type="button" data-v="grp" aria-pressed="false">เทียบระหว่างกลุ่ม</button>
+        <button type="button" data-v="mx" aria-pressed="false" id="view-mx">รายการ × รพ.</button>
+      </div></div>
+    <div class="ctl" id="c-lvl"><span class="l">ระดับกองทุน</span>
+      <div class="seg" id="lvl" role="group" aria-label="ระดับกองทุน">
+        <button type="button" data-v="m" aria-pressed="true">กองทุนหลัก</button>
+        <button type="button" data-v="s" aria-pressed="false">รายการย่อย</button>
+      </div></div>
+    <div class="ctl" id="c-dsrc"><label for="dsrc">ดูรายละเอียดจากแหล่งข้อมูล</label><select id="dsrc" style="width:min(300px,100%)"></select></div>
+  </div>
+</div>
+
+<div class="ctx" id="ctx"></div>
+<section id="main"></section>
+
+<footer>
+  <p><b>อันดับ</b> 1 = ได้รับสูงสุดในกลุ่มเปรียบเทียบ (“3 / 9” = อันดับที่ 3 จาก 9 แห่งที่มียอด) ไม่นับ รพ. ที่ยอดเป็น 0 · ค่าที่แสดงเท่ากัน (ปัดเป็นบาท) ได้อันดับและสีเดียวกัน · ถ้า รพ. ที่โฟกัสไม่อยู่ในกลุ่มที่เลือก ระบบเพิ่มเข้ากลุ่มเปรียบเทียบให้อัตโนมัติ</p>
+  <p><b>ต่อหัว UC</b> = ยอดชดเชย ÷ ประชากร UC ของ รพ. นั้น (<span id="fpop"></span>) ใช้ตัวหารเดียวกันกับทุกกองทุน จึงควรตีความกองทุนที่ไม่ผูกกับประชากร UC (เช่น อวัยวะเทียม ไตวาย สิทธิ อปท./ข้าราชการ) ด้วยความระมัดระวัง</p>
+  <p><b>เฉดสี</b> ในคอลัมน์ต่อหัว UC / รายครั้ง ไล่จากแดง (ต่ำสุดในกลุ่ม) ผ่านเหลือง ไปเขียว (สูงสุดในกลุ่ม) ตามลำดับอันดับ ไม่ใช่ตามสัดส่วนของยอดเงิน · ทุกช่องมีตัวเลขและอันดับกำกับ</p>
+  <p><b>แต่ละแหล่งข้อมูลเป็นคนละมุมมอง</b> (เช่น อวัยวะเทียม/ไตวาย/MOPH/KTB เป็นส่วนหนึ่งของรายการใน L1/L2) จึงไม่ควรนำยอดข้ามแหล่งมารวมกัน</p>
+  <p class="credit">ออกแบบและพัฒนาโดย นายแพทย์กุลพล ตั้งรัตนาพิบูล นายแพทย์ชำนาญการ (ด้านเวชกรรม) ปฏิบัติหน้าที่ผู้อำนวยการ <a href="https://www.songkwaehospital.com/" target="_blank" rel="noopener">โรงพยาบาลสองแคว</a> อำเภอสองแคว จังหวัดน่าน</p>
+</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const D = /*__DATA__*/null;
+const H = D.H, NH = H.length, S = D.S;
+const ALL = [...Array(NH).keys()];
+const POP = Float64Array.from(H.map(h=>h.u));
+const GK = {r:{f:'r',label:'ตามเขตสุขภาพ'}, p:{f:'p',label:'ตามจังหวัด'}, l:{f:'l',label:'ตามขนาด (A–F3)'}, g:{f:'g',label:'ตามกลุ่มระดับบริการ (GroupName)'}};
+const ORDER = {
+  l:['A','S','M1','M2','F1','F2','F3'],
+  g:D.GORDER,
+  r:D.RORDER,
+  p:[]
+};
+const META = {
+  L1:{t:'ภาพรวมการโอนเงิน', f:'L1_budget', note:'เงินที่ รพ. ได้รับ แยกกองทุนหลัก/รายการย่อย (คอลัมน์ BUDGET)', item:'กองทุน'},
+  L2:{t:'ข้อมูลรายกองทุนย่อย', f:'L2_statementuc', note:'ยอดชดเชยรายกองทุนย่อยจาก Statement UC — ใช้คอลัมน์ ACT_AMT', item:'กองทุน'},
+  L3:{t:'ข้อมูลการเบิกชดเชยอวัยวะเทียม', f:'L3_instrument', note:'ยอดเบิกชดเชยอุปกรณ์/อวัยวะเทียมรายรหัสรายการ (SUM_AMT)', item:'รายการอุปกรณ์'},
+  L4:{t:'ข้อมูลการเบิกชดเชยกองทุนโรคไต', f:'L4_ckd_2203', note:'ยอดเบิกชดเชยโรคไตวายเรื้อรัง (ACT_AMT) — มีเฉพาะ รพ. ที่จัดบริการ', item:'รายการ'},
+  L5:{t:'ข้อมูลการเบิกชดเชยผ่าน MOPH CLAIM', f:'L5_moph_2205', note:'ยอดเบิกชดเชยบริการส่งเสริมป้องกันผ่าน MOPH Claim (ACT_AMT)', item:'รายการ'},
+  L6:{t:'ข้อมูลการเบิกชดเชยผ่าน KTB Platform', f:'L6_ktp_2263', note:'ยอดเบิกชดเชยบริการผ่าน KTB Platform รายรหัสบริการ (ACT_AMT)', item:'รายการ'},
+  L7:{t:'ข้อมูลการเบิกชดเชยกรมบัญชีกลาง', f:'L7_csmbs', note:'ยอดเบิกชดเชยสิทธิข้าราชการ รวมทุกเดือน '+D.META.months+' · จัดลำดับตามยอดชดเชย OP ต่อ visit (NUMPT_OP) · ไม่นำ รพ. ขนาด A, S, รพ.เชียงคำ และ รพ.สันป่าตอง มาคำนวณ เพราะข้อมูลไม่ครบ', item:'ตัวชี้วัด'},
+  L8:{t:'ข้อมูลการเบิกชดเชย อปท.', f:'L8_lgo', note:'ยอดเบิกชดเชยสิทธิ อปท. รวมทุกเดือน '+D.META.months+' · จัดลำดับตามยอดชดเชย OP ต่อ visit (NUMPT_OP)', item:'ตัวชี้วัด'}
+};
+const SIDS = ['L2','L3','L4','L5','L6','L7','L8','L1'];
+/* L7 (กรมบัญชีกลาง): ตัด รพ. ที่ข้อมูลไม่ครบ ออกจากการคำนวณทั้งหมด */
+const EX7 = new Set(ALL.filter(i=>H[i].l==='A' || H[i].l==='S' || H[i].n==='รพ.เชียงคำ' || H[i].n==='รพ.สันป่าตอง'));
+const excl = i => st.tab==='L7' && EX7.has(i);
+const TABS = SIDS.map(id=>({id, t:META[id].t, s:META[id].f})).concat([{id:'HP', t:'สรุปข้อมูลวิเคราะห์รายโรงพยาบาล', s:'ทุกแหล่งข้อมูล'}]);
+const LM_LABEL = {opVisit:'ยอดชดเชยรายครั้ง OP (ยอดชดเชย OP ÷ จำนวน OP visit)'};
+const st = {tab:'L2', mode:'filter', f:{r:'all',p:'all',l:'all',g:D.DEF.g}, custom:[], focus:D.DEF.focus, metric:'pc', lm:'opVisit', view:'mx', item:{}, part:{}, lvl:'s', dlvl:'m', cdim:'l', sort:{k:'prim',dir:1}, dsrc:'L2'};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const n0 = v => Math.round(v).toLocaleString('en-US');
+const isLM = (id=st.tab) => id==='L7' || id==='L8';
+const isSrc = () => st.tab!=='HP';
+
+/* ---------- heat (red → yellow → green), rank-based ---------- */
+function heatRGB(t){
+  const A=[217,83,79], B=[242,201,76], C=[58,167,109];
+  const [p,q,u] = t<.5 ? [A,B,t/.5] : [B,C,(t-.5)/.5];
+  return `rgb(${p.map((x,i)=>Math.round(x+(q[i]-x)*u)).join(',')})`;
+}
+const rankT = (r,n) => n>1 ? 1-(r-1)/(n-1) : .5;
+const heatBg = (r,n) => `background:color-mix(in srgb,${heatRGB(rankT(r,n))} var(--mix),var(--surface))`;
+const blueBg = (r,n) => `background:color-mix(in srgb,var(--heat) ${Math.round(8+40*rankT(r,n))}%,var(--surface))`;
+const cellBg = (rg,r,n) => rg ? heatBg(r,n) : blueBg(r,n);
+const legendGrad = () => `<span>เฉดสี: น้อย<i class="grad"></i>มาก (ตามอันดับในกลุ่ม)</span>`;
+
+/* ---------- peers / filters ---------- */
+const provOrder = [...new Set(H.map(h=>h.p))];
+ORDER.p = provOrder;
+const FV = {r:ORDER.r.filter(k=>H.some(h=>h.r===k)), p:provOrder, l:ORDER.l.filter(k=>H.some(h=>h.l===k)), g:ORDER.g.filter(k=>H.some(h=>h.g===k))};
+const matchF = (i, skip) => ['r','p','l','g'].every(d=> d===skip || st.f[d]==='all' || H[i][GK[d].f]===st.f[d]);
+function basePeers(){ return (st.mode==='custom' ? st.custom.slice() : ALL.filter(i=>matchF(i))).filter(i=>!excl(i)); }
+function peerIdx(){ const p = basePeers(); if(st.focus!==null && !excl(st.focus) && !p.includes(st.focus)) p.push(st.focus); return p; }
+const focusAdded = () => st.focus!==null && !excl(st.focus) && !basePeers().includes(st.focus);
+function grpLabel(){
+  if(st.mode==='custom') return `รพ. ที่เลือกเอง ${st.custom.filter(i=>!excl(i)).length} แห่ง`;
+  const parts=[]; if(st.f.r!=='all') parts.push('เขต '+st.f.r); if(st.f.p!=='all') parts.push('จ.'+st.f.p); if(st.f.l!=='all') parts.push('ขนาด '+st.f.l); if(st.f.g!=='all') parts.push(st.f.g);
+  return parts.length ? parts.join(' · ') : 'ทั้งประเทศ';
+}
+function buildFilters(){
+  const cfg = {r:['fr','ทุกเขต'], p:['fp','ทุกจังหวัด'], l:['fl','ทุกขนาด'], g:['fg','ทุกกลุ่ม']};
+  ['r','p','l','g'].forEach(d=>{
+    const [id,all] = cfg[d], f = GK[d].f;
+    const cnt = v => ALL.filter(i=>!excl(i) && matchF(i,d) && (v==='all'||H[i][f]===v)).length;
+    $('#'+id).innerHTML = `<option value="all">${all} (${cnt('all')})</option>` + FV[d].map(v=>{ const c=cnt(v); return `<option value="${esc(v)}"${c?'':' disabled'}>${esc(d==='l'?'ขนาด '+v:d==='r'?'เขต '+v:v)} (${c})</option>`; }).join('');
+    $('#'+id).value = st.f[d];
+  });
+}
+
+/* ---------- hospital combo box (code or name) ---------- */
+function makeCombo(inId, lsId, onPick, opts={}){
+  const inp = $('#'+inId), ls = $('#'+lsId); let items = [], on = -1;
+  const label = i => `${H[i].c} · ${H[i].n}`;
+  const show = () => {
+    const q = inp.value.trim().toLowerCase(), showAll = inp.dataset.pristine==='1' || !q;
+    items = ALL.filter(i=>!(opts.exclude&&opts.exclude(i))).filter(i=> showAll || String(H[i].c).includes(q) || H[i].n.toLowerCase().includes(q) || H[i].p.includes(q))
+      .sort((a,b)=>H[a].c-H[b].c);
+    on = items.length ? 0 : -1;
+    ls.innerHTML = items.length ? items.map((i,k)=>`<li role="option" data-i="${i}" class="${k===on?'on':''}"><b>${H[i].c}</b>${esc(H[i].n)}<small>เขต ${H[i].r} · ${esc(H[i].p)} · ${esc(H[i].l)}</small></li>`).join('') : `<li class="none">ไม่พบ รพ. ที่ตรงกับ “${esc(inp.value)}”</li>`;
+    ls.hidden = false; inp.setAttribute('aria-expanded','true');
+  };
+  const hide = () => { ls.hidden = true; inp.setAttribute('aria-expanded','false'); };
+  const mark = () => { [...ls.children].forEach((li,k)=>li.classList.toggle('on',k===on)); const el = ls.children[on]; if(el) el.scrollIntoView({block:'nearest'}); };
+  inp.addEventListener('focus', ()=>{ inp.dataset.pristine = inp.value ? '1' : '0'; inp.select(); show(); });
+  inp.addEventListener('input', ()=>{ inp.dataset.pristine='0'; show(); });
+  inp.addEventListener('keydown', e=>{
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(ls.hidden) show(); else { on = Math.min(items.length-1,on+1); mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); on = Math.max(0,on-1); mark(); }
+    else if(e.key==='Enter'){ e.preventDefault(); if(items[on]!==undefined){ onPick(items[on]); hide(); inp.blur(); } }
+    else if(e.key==='Escape'){ hide(); inp.blur(); }
+  });
+  inp.addEventListener('blur', ()=>setTimeout(hide,120));
+  ls.addEventListener('mousedown', e=>{ const li = e.target.closest('li[data-i]'); if(!li) return; e.preventDefault(); onPick(+li.dataset.i); hide(); inp.blur(); });
+}
+function syncFocusInput(){
+  const inp = $('#focus-in'); inp.value = st.focus===null ? '' : `${H[st.focus].c} · ${H[st.focus].n}`;
+  $('#focus-clr').hidden = st.focus===null || st.tab==='HP';
+}
+function renderChips(){
+  const box = $('#chips'); box.hidden = st.mode!=='custom';
+  if(st.mode!=='custom') return;
+  box.innerHTML = st.custom.length ? st.custom.map(i=>`<span class="chip"><span class="cd">${H[i].c}</span>${esc(H[i].n)}<button type="button" data-rm="${i}" aria-label="เอาออก ${esc(H[i].n)}">×</button></span>`).join('') + `<button type="button" class="chip" data-clear="1" style="padding:3px 11px">ล้างทั้งหมด</button>` : `<span class="dim">ยังไม่ได้เลือก รพ. — พิมพ์รหัสหรือชื่อ รพ. ในช่อง “เพิ่ม รพ.” เพื่อเริ่มเปรียบเทียบ</span>`;
+}
+
+/* ---------- source build ---------- */
+const cache = {};
+function build(id, part){
+  const ck = id+'|'+part; if(cache[ck]) return cache[ck];
+  const s = S[id], vi = 2+part;
+  const mainInfo = {}; s.mains.forEach(m=>mainInfo[m.id]=m);
+  const F = new Map(), total = new Float64Array(NH);
+  const get = (key,name,lvl,main) => { let f=F.get(key); if(!f){ f={key,name,lvl,main,arr:new Float64Array(NH),sum:0}; F.set(key,f);} return f; };
+  s.recs.forEach(r=>{
+    if(id==='L7' && EX7.has(r[0])) return;
+    const k = s.keys[r[1]], v = r[vi]||0, h = r[0];
+    if(!s.flat) get('s:'+k.id, k.name, 's', k.m).arr[h] += v;
+    get('m:'+k.m, mainInfo[k.m].name, 'm', k.m).arr[h] += v;
+    total[h] += v;
+  });
+  const list = [...F.values()].filter(f=>{ let sm=0, nz=false; for(let i=0;i<NH;i++){ sm+=f.arr[i]; if(f.arr[i]!==0) nz=true; } f.sum=sm; return nz; });
+  list.sort((a,b)=>b.sum-a.sum);
+  const map = new Map(list.map(f=>[f.key,f]));
+  const mains = list.filter(f=>f.lvl==='m'), subsBy = {};
+  list.filter(f=>f.lvl==='s').forEach(f=>{ (subsBy[f.main] ||= []).push(f); });
+  return cache[ck] = {list, map, mains, subsBy, total, flat:s.flat};
+}
+const curB = () => build(st.tab, st.part[st.tab]||0);
+const curItem = () => st.item[st.tab] || 'all';
+const vecOf = (b,key) => key==='all' ? b.total : (b.map.get(key)||{arr:b.total}).arr;
+const itemName = (b,key) => key==='all' ? S[st.tab].allLabel : (b.map.get(key)||{name:S[st.tab].allLabel}).name;
+
+/* L7 / L8: totals across all months */
+const lmC = {};
+function lmMeas(id){
+  if(lmC[id]) return lmC[id];
+  const d = {opA:new Float64Array(NH), ipA:new Float64Array(NH), opN:new Float64Array(NH), ipN:new Float64Array(NH), tot:new Float64Array(NH)};
+  S[id].recs.forEach(r=>{ const h=r[0]; if(id==='L7' && EX7.has(h)) return; d.opA[h]+=r[3]; d.ipA[h]+=r[4]; d.opN[h]+=r[5]; d.ipN[h]+=r[6]; });
+  for(let i=0;i<NH;i++) d.tot[i] = d.opA[i]+d.ipA[i];
+  const ratio = (a,b)=>{ const o=new Float64Array(NH); for(let i=0;i<NH;i++) o[i]=b[i]? a[i]/b[i]:0; return o; };
+  const M = {opVisit:{label:LM_LABEL.opVisit, short:'OP ต่อครั้ง', num:d.opA, den:d.opN, vals:ratio(d.opA,d.opN), rg:true}};
+  return lmC[id] = {d, M};
+}
+const sumOn = (arr,idx) => idx.reduce((a,i)=>a+arr[i],0);
+function aggOf(m, idx){ if(!m.den) return sumOn(m.num,idx); const dn = sumOn(m.den,idx); return dn? sumOn(m.num,idx)/dn : 0; }
+
+/* ---------- stats ---------- */
+/* จัดอันดับจากค่าที่ปัดเป็นบาทตามที่แสดงบนจอ — ค่าที่แสดงเท่ากันจึงได้อันดับและสีเดียวกัน */
+const qv = v => v===0 ? 0 : (Math.round(v) || (v>0 ? 1e-9 : -1e-9));
+function rankWithin(vals, idx, out){
+  const nz = idx.filter(i=>vals[i]!==0).sort((a,b)=>qv(vals[b])-qv(vals[a]));
+  let r=0, prev=null;
+  nz.forEach((i,k)=>{ const q = qv(vals[i]); if(prev===null || q!==prev){ r=k+1; prev=q; } out[i]=r; });
+  return nz.length;
+}
+function median(a){ if(!a.length) return 0; const s=[...a].sort((x,y)=>x-y), m=s.length>>1; return s.length%2?s[m]:(s[m-1]+s[m])/2; }
+function pcVec(amt){ const o=new Float64Array(NH); for(let i=0;i<NH;i++) o[i]=H[i].u>0 ? amt[i]/H[i].u : 0; return o; }
+function ranksOf(vals, idx){
+  const rk = new Int16Array(NH), n = rankWithin(vals, idx, rk);
+  return {rk, n, med: median(idx.filter(i=>vals[i]!==0).map(i=>vals[i]))};
+}
+const rkCell = (r,n) => r ? `<span class="rk">${r}<small>/ ${n}</small></span>` : '<span class="dim">–</span>';
+const dmCell = (v,med) => (!v || !med) ? '<span class="dim">–</span>' : (d=>`<span class="${d>=0?'pos-up':'pos-dn'}">${d>=0?'+':''}${n0(d)}%</span>`)((v/med-1)*100);
+const metricVals = amt => st.metric==='pc' ? pcVec(amt) : amt;
+const emptyMsg = () => `<div class="panel empty"><b>ยังไม่มี รพ. ในกลุ่มเปรียบเทียบ</b><br>เลือกตัวกรองด้านบน หรือพิมพ์รหัส/ชื่อ รพ. ในช่อง “เพิ่ม รพ. เข้ากลุ่มเปรียบเทียบ”</div>`;
+function pin(rows){ if(st.focus===null) return rows; const k = rows.findIndex(r=>r.i===st.focus); if(k>0){ const [f]=rows.splice(k,1); rows.unshift(f); } return rows; }
+const fTag = i => i===st.focus ? '<span class="tag hi">โฟกัส</span>' : '';
+const toHp = i => i===st.focus ? `<a class="dl" data-hp="1">สรุป รพ. ›</a>` : '';
+const nameCell = i => `<td class="t name">${fTag(i)}<a class="lnk" data-h="${i}">${esc(H[i].n)}</a>${toHp(i)}</td><td class="t dim">${H[i].c}</td>`;
+
+/* ---------- controls ---------- */
+function buildMetricSelect(){
+  const sel = $('#metric');
+  if(isSrc() && isLM()) sel.innerHTML = `<option value="opVisit">${esc(LM_LABEL.opVisit)}</option>`;
+  else sel.innerHTML = `<option value="pc">เงินที่ได้รับ ÷ ประชากร UC (บาท/หัว)</option><option value="amt">เงินที่ได้รับ (บาท)</option>`;
+  sel.value = (isSrc() && isLM()) ? st.lm : st.metric;
+}
+function buildItemSelect(){
+  if(isLM()) return;
+  const b = curB(), s = S[st.tab], sel = $('#item'); const keep = curItem();
+  let h = `<option value="all">${esc(s.allLabel)}</option>`;
+  if(b.flat){ b.mains.forEach(m=>{ h += `<option value="${esc(m.key)}">${esc(m.name)}</option>`; }); }
+  else b.mains.forEach(m=>{
+    const subs = b.subsBy[m.main] || [];
+    if(subs.length<=1){ h += `<option value="${esc(m.key)}">${esc(m.name)}</option>`; return; }
+    h += `<optgroup label="${esc(m.name)}"><option value="${esc(m.key)}">ทั้งกองทุน (รวมรายการย่อย)</option>`;
+    subs.forEach(x=>{ h += `<option value="${esc(x.key)}">${esc(x.name)}</option>`; });
+    h += `</optgroup>`;
+  });
+  sel.innerHTML = h;
+  st.item[st.tab] = (keep==='all' || b.map.has(keep)) ? keep : 'all';
+  sel.value = st.item[st.tab];
+  $('#item-l').textContent = META[st.tab].item;
+}
+function buildPartSelect(){
+  if(st.tab!=='L3') return;
+  const s = S.L3; $('#part').innerHTML = s.parts.map((p,i)=>`<option value="${i}">${esc(p)}</option>`).join(''); $('#part').value = st.part.L3||0;
+}
+function buildDsrc(){
+  $('#dsrc').innerHTML = SIDS.map(id=>`<option value="${id}">${esc(META[id].t)} (${META[id].f})</option>`).join(''); $('#dsrc').value = st.dsrc;
+}
+function setSeg(id,v){ document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===v)); }
+function applyVisibility(){
+  const src = isSrc(), lm = src && isLM();
+  const vis = {
+    fr: st.mode==='filter', fp: st.mode==='filter', fl: st.mode==='filter', fg: st.mode==='filter', add: st.mode==='custom',
+    cdim: src && st.view==='grp', item: src && !lm && st.view!=='mx', part: st.tab==='L3',
+    view: src, lvl: src && !lm && !S[st.tab].flat && st.view==='mx', dsrc: !src, metric: !lm
+  };
+  Object.keys(vis).forEach(k=>{ const el=$('#c-'+k); if(el) el.hidden = !vis[k]; });
+  $('#view-mx').textContent = lm ? 'ตัวชี้วัด × รพ.' : 'รายการ × รพ.';
+}
+function ctxLine(){
+  const add = (focusAdded() ? ` <span class="tag warn">รพ. โฟกัสไม่ตรงตัวกรอง — เพิ่มเข้ากลุ่มให้อัตโนมัติ</span>` : '') + (st.focus!==null && excl(st.focus) ? ` <span class="tag warn">รพ. โฟกัสไม่ถูกนำมาคำนวณในแถบนี้ (ข้อมูลไม่ครบ)</span>` : '');
+  const np = peerIdx().length;
+  if(!isSrc()) return `<b>สรุปข้อมูลวิเคราะห์รายโรงพยาบาล</b> · กลุ่มเปรียบเทียบ: <b>${esc(grpLabel())}</b> (${np} แห่ง) · ${st.metric==='pc'?'เงินที่ได้รับ ÷ ประชากร UC':'เงินที่ได้รับ (บาท)'}${add}<span class="src">แต่ละแหล่งข้อมูลเป็นคนละมุมมอง ไม่ควรรวมยอดข้ามแหล่ง</span>`;
+  const m = META[st.tab], b = isLM()?null:curB();
+  const it = isLM() ? LM_LABEL[st.lm] : (st.view==='mx' ? 'ทุกรายการ' : itemName(b, curItem()));
+  const part = (st.tab==='L3') ? ` · ${S.L3.parts[st.part.L3||0]}` : '';
+  const g = st.view==='grp' ? `เทียบระหว่างกลุ่ม ${GK[st.cdim].label} ภายใน “${esc(grpLabel())}”` : `กลุ่มเปรียบเทียบ: <b>${esc(grpLabel())}</b> (${np} แห่ง)`;
+  return `<b>${esc(m.t)}</b> (${m.f}) · ${esc(m.item)}: <b>${esc(it)}</b>${esc(part)} · ${g}${add}<span class="src">${esc(m.note)}</span>`;
+}
+
+/* ---------- tooltip ---------- */
+const tip = $('#tip');
+document.addEventListener('mouseover', e=>{
+  const t = e.target.closest && e.target.closest('[data-tip]');
+  if(!t){ tip.style.display='none'; return; }
+  tip.textContent = t.dataset.tip; tip.style.display='block';
+});
+document.addEventListener('mousemove', e=>{
+  if(tip.style.display==='none') return;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX+14, y = e.clientY+16;
+  if(x+w > innerWidth-8) x = e.clientX-w-14;
+  if(y+h > innerHeight-8) y = e.clientY-h-14;
+  tip.style.left = x+'px'; tip.style.top = y+'px';
+});
+
+/* ---------- view: hospital ranking (standard sources) ---------- */
+const SORTS = {
+  name:(a,b)=>H[a.i].n.localeCompare(H[b.i].n,'th'), code:(a,b)=>H[a.i].c-H[b.i].c, prov:(a,b)=>H[a.i].p.localeCompare(H[b.i].p,'th'),
+  pop:(a,b)=>H[a.i].u-H[b.i].u, amt:(a,b)=>a.amt-b.amt, pc:(a,b)=>a.pc-b.pc,
+  ra:(a,b)=>(a.ra||1e9)-(b.ra||1e9), rp:(a,b)=>(a.rp||1e9)-(b.rp||1e9), rr:(a,b)=>(a.rr||1e9)-(b.rr||1e9), dm:(a,b)=>a.dm-b.dm,
+  opA:(a,b)=>a.opA-b.opA, opN:(a,b)=>a.opN-b.opN, opv:(a,b)=>a.opv-b.opv, oppc:(a,b)=>a.oppc-b.oppc, ipA:(a,b)=>a.ipA-b.ipA, ippc:(a,b)=>a.ippc-b.ippc, tot:(a,b)=>a.tot-b.tot
+};
+const th = (k,label,cls='') => `<th class="sortable ${cls}" data-sort="${k}">${label}${st.sort.k===k?` <span class="arr">${st.sort.dir>0?'▲':'▼'}</span>`:''}</th>`;
+function sortRows(rows, primFn){
+  if(st.sort.k==='prim') rows.sort((a,b)=> primFn(a,b) || H[a.i].n.localeCompare(H[b.i].n,'th'));
+  else { const f = SORTS[st.sort.k]; rows.sort((a,b)=> st.sort.dir*f(a,b) || primFn(a,b)); }
+  return pin(rows);
+}
+function viewRk(){
+  const peers = peerIdx(); if(!peers.length) return emptyMsg();
+  const b = curB(), amt = vecOf(b,curItem()), pc = pcVec(amt), prim = st.metric==='pc' ? pc : amt;
+  const A = ranksOf(amt,peers), P = ranksOf(pc,peers), R = ranksOf(prim,ALL);
+  const nzN = peers.filter(i=>amt[i]!==0).length, sum = sumOn(amt,peers), pop = sumOn(POP,peers);
+  const rows = peers.map(i=>({i, amt:amt[i], pc:pc[i], ra:A.rk[i], rp:P.rk[i], rr:R.rk[i], dm: P.med && amt[i]!==0 ? pc[i]/P.med : -1e9}));
+  sortRows(rows, (a,c)=> st.metric==='pc' ? (a.rp||1e9)-(c.rp||1e9) : (a.ra||1e9)-(c.ra||1e9));
+  const pcls = st.metric==='pc' ? 'prim' : '', acls = st.metric==='amt' ? 'prim' : '';
+  const showReg = peers.length<NH;
+  const body = rows.map(r=>{
+    const has = r.amt!==0;
+    const tipA = `อันดับยอดเงิน ${r.ra||'–'} จาก ${A.n} แห่งที่มียอด ใน ${grpLabel()}`;
+    const tipP = `อันดับต่อหัว UC ${r.rp||'–'} จาก ${P.n} แห่งที่มียอด ใน ${grpLabel()}\nทั้งประเทศ (ตามค่าที่เลือก): ${r.rr||'–'} / ${R.n}`;
+    return `<tr class="${r.i===st.focus?'focus':''}">${nameCell(r.i)}
+      <td class="t">${esc(H[r.i].p)} <span class="dim">(เขต ${H[r.i].r})</span></td><td class="t">${esc(H[r.i].l)}</td><td class="t dim" style="white-space:normal;min-width:130px">${esc(H[r.i].g)}</td>
+      <td>${n0(H[r.i].u)}</td><td>${has? n0(r.amt):'–'}</td><td data-tip="${esc(tipA)}">${rkCell(r.ra,A.n)}</td>
+      <td class="hc" data-hc="1" ${has?`style="${heatBg(r.rp,P.n)}"`:''}>${has? n0(r.pc):'–'}</td><td data-tip="${esc(tipP)}">${rkCell(r.rp,P.n)}</td>
+      ${showReg?`<td>${rkCell(r.rr,R.n)}</td>`:''}<td>${has? dmCell(r.pc,P.med):'<span class="dim">–</span>'}</td></tr>`;
+  }).join('');
+  return `
+    <div class="stats">
+      <div class="stat"><div class="v">${n0(sum)} <small>บาท</small></div><div class="k">ยอดรวมของกลุ่มเปรียบเทียบ</div></div>
+      <div class="stat"><div class="v">${n0(pop? sum/pop:0)} <small>บาท</small></div><div class="k">ต่อหัว UC (ถ่วงน้ำหนักด้วยประชากร)</div></div>
+      <div class="stat"><div class="v">${nzN} <small>/ ${peers.length} แห่ง</small></div><div class="k">รพ. ที่มียอดในรายการนี้</div></div>
+      <div class="stat"><div class="v">${n0(pop)}</div><div class="k">ประชากร UC</div></div>
+    </div>
+    <div class="legend">${legendGrad()}<span>คลิกหัวคอลัมน์เพื่อเรียง · คลิกชื่อ รพ. เพื่อโฟกัส (ปักหมุดไว้บนสุด)</span></div>
+    <div class="panel"><div class="scroll"><table>
+      <thead><tr>${th('name','หน่วยบริการ','t')}${th('code','รหัส','t')}${th('prov','จังหวัด','t')}<th class="t">ขนาด</th><th class="t">กลุ่มระดับบริการ</th>
+      ${th('pop','ประชากร UC')}${th('amt','เงินที่ได้รับ<br>(บาท)',acls)}${th('ra','อันดับ<br>ยอดเงิน<br>ในกลุ่ม',acls)}${th('pc','ต่อหัว UC<br>(บาท)',pcls)}${th('rp','อันดับ<br>ต่อหัว UC<br>ในกลุ่ม',pcls)}${showReg?th('rr','อันดับ<br>ทั้งประเทศ<br>('+(st.metric==='pc'?'ต่อหัว':'ยอดเงิน')+')'):''}${th('dm','ต่อหัว UC<br>เทียบมัธยฐาน')}</tr></thead>
+      <tbody>${body}</tbody></table></div></div>
+    <p class="note">จัดอันดับภายในกลุ่ม “${esc(grpLabel())}” · คอลัมน์ที่เน้น (ตัวหนา) คือค่าที่เลือกวิเคราะห์ · มัธยฐานคำนวณจาก รพ. ที่มียอดในกลุ่มเดียวกัน</p>`;
+}
+
+/* ---------- view: hospital ranking (L7 / L8) : จัดลำดับตาม OP ต่อ visit ---------- */
+function viewRkLM(){
+  const peers = peerIdx(); if(!peers.length) return emptyMsg();
+  const {d, M} = lmMeas(st.tab), prim = M.opVisit.vals;
+  const uni = ALL.filter(i=>!excl(i));
+  const P = ranksOf(prim, peers), Rr = ranksOf(prim, uni);
+  const rows = peers.map(i=>({i, opA:d.opA[i], opN:d.opN[i], opv:prim[i], ipA:d.ipA[i], tot:d.tot[i], rp:P.rk[i], rr:Rr.rk[i], dm:P.med && prim[i]!==0 ? prim[i]/P.med : -1e9}));
+  sortRows(rows, (a,c)=>(a.rp||1e9)-(c.rp||1e9));
+  const showReg = peers.length<uni.length;
+  const body = rows.map(r=>{
+    const has = r.opv!==0;
+    return `<tr class="${r.i===st.focus?'focus':''}">${nameCell(r.i)}
+      <td class="t">${esc(H[r.i].p)} <span class="dim">(เขต ${H[r.i].r})</span></td><td class="t">${esc(H[r.i].l)}</td>
+      <td>${r.opA? n0(r.opA):'–'}</td><td>${r.opN? n0(r.opN):'–'}</td>
+      <td class="hc" data-hc="1" ${has?`style="${heatBg(r.rp,P.n)}" data-tip="${esc('อันดับ '+r.rp+' จาก '+P.n+' ใน '+grpLabel())}"`:''}>${has? n0(r.opv):'–'}</td>
+      <td>${r.ipA? n0(r.ipA):'–'}</td><td>${r.tot? n0(r.tot):'–'}</td>
+      <td>${rkCell(r.rp,P.n)}</td>${showReg?`<td>${rkCell(r.rr,Rr.n)}</td>`:''}<td>${has? dmCell(r.opv,P.med):'<span class="dim">–</span>'}</td></tr>`;
+  }).join('');
+  const sOp = sumOn(d.opA,peers), sIp = sumOn(d.ipA,peers), sN = sumOn(d.opN,peers);
+  const exNote = st.tab==='L7' ? ' · ไม่นำ รพ. ขนาด A, S, รพ.เชียงคำ และ รพ.สันป่าตอง มาคำนวณ (ข้อมูลไม่ครบ)' : '';
+  return `
+    <div class="stats">
+      <div class="stat"><div class="v">${n0(sN? sOp/sN:0)} <small>บาท/ครั้ง</small></div><div class="k">ยอดชดเชย OP ต่อ visit (รวมกลุ่ม)</div></div>
+      <div class="stat"><div class="v">${n0(sOp)} <small>บาท</small></div><div class="k">ยอดชดเชย OP</div></div>
+      <div class="stat"><div class="v">${n0(sN)}</div><div class="k">จำนวน OP visit</div></div>
+      <div class="stat"><div class="v">${n0(sIp)} <small>บาท</small></div><div class="k">ยอดชดเชย IP</div></div>
+      <div class="stat"><div class="v">${peers.filter(i=>d.opN[i]!==0).length} <small>/ ${peers.length} แห่ง</small></div><div class="k">รพ. ที่มีข้อมูล OP</div></div>
+    </div>
+    <div class="legend">${legendGrad()}<span>จัดลำดับตาม ${esc(LM_LABEL.opVisit)} · รวมทุกเดือน ${D.META.months}${exNote}</span></div>
+    <div class="panel"><div class="scroll"><table>
+      <thead><tr>${th('name','หน่วยบริการ','t')}${th('code','รหัส','t')}${th('prov','จังหวัด','t')}<th class="t">ขนาด</th>
+      ${th('opA','OP<br>ยอดชดเชย (บาท)')}${th('opN','OP<br>จำนวน visit')}${th('opv','OP ต่อครั้ง<br>(บาท/visit)','prim')}
+      ${th('ipA','IP<br>ยอดชดเชย (บาท)')}${th('tot','รวม OP+IP<br>(บาท)')}
+      ${th('rp','อันดับ<br>ในกลุ่ม','prim')}${showReg?th('rr','อันดับ<br>ทั้งประเทศ'):''}${th('dm','OP ต่อครั้ง<br>เทียบมัธยฐาน')}</tr></thead>
+      <tbody>${body}</tbody></table></div></div>
+    <p class="note">ยอดชดเชยรายครั้ง = ยอดชดเชย OP ÷ จำนวน OP visit (NUMPT_OP) · อันดับและสีคิดภายในกลุ่ม “${esc(grpLabel())}” เฉพาะ รพ. ที่มีข้อมูล OP${exNote}</p>`;
+}
+
+/* ---------- view: compare between groups ---------- */
+function viewGrp(){
+  const peers = peerIdx(); if(!peers.length) return emptyMsg();
+  let vals, agg, present, rg, unit, valHead, totHead, totFn, popHead = 'ประชากร UC', popFn = idx=>sumOn(POP,idx);
+  if(isLM()){
+    const {d,M} = lmMeas(st.tab), m = M.opVisit;
+    vals = m.vals; agg = idx=>aggOf(m,idx); present = i=>d.opA[i]!==0; rg = true; unit = m.label; valHead = 'OP ต่อครั้ง<br>(รวมกลุ่ม)'; totHead = 'ยอดชดเชย OP (บาท)'; totFn = idx=>sumOn(d.opA,idx);
+    popHead = 'จำนวน OP visit'; popFn = idx=>sumOn(d.opN,idx);
+  } else {
+    const b = curB(), amt = vecOf(b,curItem());
+    vals = metricVals(amt); rg = st.metric==='pc'; present = i=>amt[i]!==0;
+    agg = idx => { const s=sumOn(amt,idx); return rg ? (sumOn(POP,idx)? s/sumOn(POP,idx):0) : s; };
+    unit = rg ? 'บาท / หัว UC' : 'เงินที่ได้รับ (บาท)'; valHead = rg ? 'ต่อหัว UC<br>(รวมกลุ่ม)' : 'ยอดรวมกลุ่ม<br>(บาท)'; totHead = 'เงินที่ได้รับ (บาท)'; totFn = idx=>sumOn(amt,idx);
+  }
+  const f = GK[st.cdim].f, gm = new Map();
+  peers.forEach(i=>{ const k=H[i][f]; if(!gm.has(k)) gm.set(k,[]); gm.get(k).push(i); });
+  const ordr = ORDER[st.cdim].filter(k=>gm.has(k)); [...gm.keys()].forEach(k=>{ if(!ordr.includes(k)) ordr.push(k); });
+  const stat = (k,idx) => { const nz = idx.filter(present); return {k, n:idx.length, nz:nz.length, pop:popFn(idx), tot:totFn(idx), v:agg(idx), med:median(nz.map(i=>vals[i])), idx}; };
+  const S_ = ordr.map(k=>stat(k,gm.get(k))), Rg = stat('_',peers);
+  const order = S_.filter(s=>s.v!==0).sort((a,b)=>qv(b.v)-qv(a.v)), rkg = new Map();
+  order.forEach((s,j)=>{ rkg.set(s.k, j>0 && qv(order[j-1].v)===qv(s.v) ? rkg.get(order[j-1].k) : j+1); });
+  let mx = 0; peers.forEach(i=>{ if(vals[i]>mx) mx=vals[i]; });
+  const xpos = v => mx>0 ? Math.max(0,Math.min(100, v/mx*100)) : 0;
+  const strip = s => {
+    const dots = s.idx.filter(present).map(i=>{
+      const t = `${H[i].n} (${H[i].c})\n${H[i].p} · ขนาด ${H[i].l} · UC ${n0(H[i].u)}\n${unit}: ${n0(vals[i])}`;
+      return `<span class="dot${i===st.focus?' sel':''}" style="left:${xpos(vals[i]).toFixed(2)}%" data-tip="${esc(t)}"></span>`;
+    }).join('');
+    const md = s.nz ? `<span class="med" style="left:${xpos(s.med).toFixed(2)}%" data-tip="มัธยฐานของกลุ่ม ${n0(s.med)}"></span>` : '';
+    return `<div class="track">${md}${dots}</div>`;
+  };
+  const line = (label, s, cls='') => { const has = rkg.has(s.k);
+    return `<tr class="${cls}"><td class="t name"><b>${esc(label)}</b></td><td>${s.nz} / ${s.n}</td><td>${n0(s.pop)}</td><td>${n0(s.tot)}</td>
+    <td class="hc" data-hc="1" ${has?`style="${cellBg(rg,rkg.get(s.k),order.length)}"`:''}>${n0(s.v)}</td>
+    <td>${has? rkCell(rkg.get(s.k),order.length):''}</td><td>${s.nz? n0(s.med):'–'}</td>
+    <td class="t" style="min-width:280px">${strip(s)}</td></tr>`; };
+  return `
+    <div class="legend">${rg?legendGrad():'<span>เฉดสีน้ำเงิน = อันดับสูงระหว่างกลุ่ม</span>'}<span><i class="sw d"></i>1 จุด = 1 รพ. (แกนเดียวกันทุกแถว: ${esc(unit)})</span><span><i class="sw m"></i>มัธยฐานของกลุ่ม</span>${st.focus!==null?'<span><i class="sw s"></i>รพ. ที่โฟกัส</span>':''}</div>
+    <div class="panel"><div class="scroll"><table>
+      <thead><tr><th class="t">${esc(GK[st.cdim].label)}</th><th>รพ. ที่มียอด</th><th>${popHead}</th><th>${totHead}</th><th>${valHead}</th><th>อันดับ<br>ระหว่างกลุ่ม</th><th>มัธยฐาน<br>ของ รพ.</th>
+      <th class="t">การกระจายของ รพ. ในกลุ่ม<div class="axis"><span>0</span><span>${n0(mx/2)}</span><span>${n0(mx)}</span></div></th></tr></thead>
+      <tbody>${S_.map(s=>line(st.cdim==='r'?'เขต '+s.k:s.k,s)).join('')}${line('รวมกลุ่มเปรียบเทียบ ('+peers.length+' แห่ง)',Rg,'tot')}</tbody></table></div></div>
+    <p class="note">เทียบเฉพาะ รพ. ในกลุ่ม “${esc(grpLabel())}” · ค่ารวมกลุ่ม = ผลรวมของตัวตั้ง ÷ ผลรวมของตัวหารทั้งกลุ่ม (ถ่วงน้ำหนัก) · สีและอันดับเทียบระหว่างกลุ่มด้วยกัน</p>`;
+}
+
+/* ---------- generic matrix (rows = items / measures, columns = hospitals) ---------- */
+function renderMatrix(defs, peers, headLabel, note){
+  const cols = peers.slice().sort((a,c)=>defs[0].vals[c]-defs[0].vals[a]);
+  const hasF = st.focus!==null && cols.includes(st.focus);
+  if(hasF){ cols.splice(cols.indexOf(st.focus),1); cols.unshift(st.focus); }
+  const rest = hasF ? cols.slice(1) : cols;
+  const rows = defs.map((df,ri)=>{
+    const rk = new Int16Array(NH), n = rankWithin(df.vals, peers, rk);
+    const last = ri===defs.length-1;
+    const cell = (i,fc) => {
+      const cls = (fc?' fc':'') + (fc&&last?' fcl':'');
+      if(df.vals[i]===0) return `<td class="c z${cls}">–</td>`;
+      const t = `${H[i].n} (${H[i].c})\n${df.label}: ${n0(df.vals[i])}\nอันดับ ${rk[i]} จาก ${n} ใน ${grpLabel()}`;
+      return `<td class="c${cls}" style="${cellBg(df.rg,rk[i],n)}" data-hc="1" data-tip="${esc(t)}"><b>${n0(df.vals[i])}</b><i>#${rk[i]}</i></td>`;
+    };
+    const nm = df.tot ? `<b>${esc(df.label)}</b>` : (df.key ? `<a class="lnk" data-f="${esc(df.key)}">${esc(df.label)}</a>` : esc(df.label));
+    return `<tr class="${df.tot?'tot':''}"><td class="f">${nm}</td>${hasF?cell(st.focus,true):''}<td class="c g">${n0(df.agg)}</td>${rest.map(i=>cell(i,false)).join('')}</tr>`;
+  }).join('');
+  const heads = i => `<th class="h${i===st.focus?' fc':''}" data-tip="${esc(H[i].n+' ('+H[i].c+')\nประชากร UC '+n0(H[i].u))}">${i===st.focus?'<span class="tag hi">โฟกัส</span><br>':''}${esc(H[i].n)}<br><span style="font-weight:400" class="dim">${H[i].c}</span></th>`;
+  return `<div class="panel"><div class="scroll"><table class="mx">
+      <thead><tr><th class="f">${headLabel}</th>${hasF?heads(st.focus):''}<th class="h">รวมกลุ่ม</th>${rest.map(heads).join('')}</tr></thead>
+      <tbody>${rows}</tbody></table></div></div>
+    <p class="note">${note}</p>`;
+}
+function viewMx(){
+  const peers = peerIdx(); if(!peers.length) return emptyMsg();
+  const popG = sumOn(POP,peers);
+  if(isLM()){
+    const {d,M} = lmMeas(st.tab);
+    const defs = [
+      {label:'ยอดชดเชยรายครั้ง OP (บาท/visit)', vals:M.opVisit.vals, rg:true, agg:aggOf(M.opVisit,peers), tot:true},
+      {label:'ยอดชดเชย OP (บาท)', vals:d.opA, rg:false, agg:sumOn(d.opA,peers)},
+      {label:'จำนวน OP visit', vals:d.opN, rg:false, agg:sumOn(d.opN,peers)},
+      {label:'ยอดชดเชย IP (บาท)', vals:d.ipA, rg:false, agg:sumOn(d.ipA,peers)},
+      {label:'ยอดชดเชยรวม OP+IP (บาท)', vals:d.tot, rg:false, agg:sumOn(d.tot,peers)}
+    ];
+    return `<div class="legend">${legendGrad()}<span>แถว OP ต่อครั้ง ไล่สีแดง–เขียว · แถวยอดเงินและจำนวน visit ใช้เฉดน้ำเงิน · #n = อันดับในกลุ่ม</span></div>` +
+      renderMatrix(defs, peers, 'ตัวชี้วัด (รวมทุกเดือน)', `${peers.length} รพ. ในกลุ่ม “${esc(grpLabel())}” เรียงจาก OP ต่อครั้งสูงสุดไปต่ำสุด · คอลัมน์ “รวมกลุ่ม” = ผลรวมตัวตั้ง ÷ ผลรวมตัวหาร${st.tab==='L7'?' · ไม่นำ รพ. ขนาด A, S, รพ.เชียงคำ และ รพ.สันป่าตอง มาคำนวณ':''}`);
+  }
+  const b = curB(), pcMode = st.metric==='pc';
+  const lvl = b.flat ? 'm' : st.lvl;
+  const mk = (label,key,arr,tot) => { const s = sumOn(arr,peers); return {label,key,vals:pcMode?pcVec(arr):arr,rg:pcMode,agg:pcMode?(popG? s/popG:0):s,tot,s}; };
+  let defs = b.list.filter(f=>f.lvl===lvl).map(f=>mk(f.name,f.key,f.arr,false)).filter(x=>peers.some(i=>x.vals[i]!==0)).sort((a,c)=>c.s-a.s);
+  defs.unshift(mk(S[st.tab].allLabel,'all',b.total,true));
+  return `<div class="legend">${pcMode?legendGrad():'<span>เฉดสีน้ำเงิน = อันดับสูงในกลุ่ม</span>'}<span>ค่าในช่อง: ${pcMode?'บาท / หัว UC':'เงินที่ได้รับ (บาท)'} · #n = อันดับในกลุ่ม · “–” = ไม่มียอด</span></div>` +
+    renderMatrix(defs, peers, `${esc(META[st.tab].item)} (คลิกเพื่อดูอันดับรายโรงพยาบาล)`, `${peers.length} รพ. ในกลุ่ม “${esc(grpLabel())}” เรียงจากค่ารวมสูงสุดไปต่ำสุด · แถวเรียงตามยอดรวมของกลุ่ม`);
+}
+
+/* ---------- tab: hospital summary ---------- */
+function detailDefs(id, lvl){
+  if(isLM(id)){
+    const {d,M} = lmMeas(id);
+    return {tot:{name:'OP ต่อครั้ง (ยอด OP ÷ OP visit)', num:d.opA, vals:M.opVisit.vals}, items:[]};
+  }
+  const b = build(id,0);
+  return {tot:{name:S[id].allLabel, num:b.total, vals:pcVec(b.total)}, items:b.list.filter(f=>f.lvl===(b.flat?'m':lvl)).map(f=>({name:f.name, num:f.arr, vals:pcVec(f.arr)}))};
+}
+function evalDef(df, hi, peers){
+  const rG = new Int16Array(NH), rR = new Int16Array(NH);
+  const nG = rankWithin(df.vals, peers, rG), nR = rankWithin(df.vals, ALL, rR);
+  return {...df, rg:rG[hi], rr:rR[hi], nG, nR, med:median(peers.filter(j=>df.vals[j]!==0).map(j=>df.vals[j])), mine:df.num[hi], v:df.vals[hi], others:peers.filter(j=>j!==hi&&df.vals[j]!==0).length};
+}
+function lineDetail(r, tot){
+  const has = r.v!==0, p = has && r.nG>1 ? 1-(r.rg-1)/(r.nG-1) : .5;
+  return `<tr class="${tot?'tot':''}">
+    <td class="t name">${tot?`<b>${esc(r.name)}</b>`:esc(r.name)}</td>
+    <td>${r.mine? n0(r.mine):'–'}</td><td class="hc" data-hc="1" ${has?`style="${heatBg(r.rg,r.nG)}"`:''}>${has? n0(r.v):'–'}</td>
+    <td>${has? rkCell(r.rg,r.nG) : (r.others? `<span class="tag warn">ไม่มียอด · กลุ่มมี ${r.others} แห่ง</span>`:'<span class="dim">–</span>')}</td>
+    <td>${has? rkCell(r.rr,r.nR):'<span class="dim">–</span>'}</td>
+    <td>${r.med? n0(r.med):'–'}</td><td>${has? dmCell(r.v,r.med):'<span class="dim">–</span>'}</td>
+    <td class="t">${has?`<span class="ptrack" data-tip="ตำแหน่งในกลุ่ม: อันดับ ${r.rg} จาก ${r.nG}"><i style="left:${(p*100).toFixed(0)}%"></i></span>`:''}</td></tr>`;
+}
+function viewHp(){
+  const peers = peerIdx(), hi = st.focus, h = H[hi], metricPc = st.metric==='pc';
+  const SV = SIDS.map(id=>{ const amt = build(id,0).total, pc = isLM(id) ? lmMeas(id).M.opVisit.vals : pcVec(amt), vals = metricPc?pc:amt; const rk = new Int16Array(NH); const n = rankWithin(vals, peers, rk); return {id, amt, pc, vals, rk, n}; });
+  const idx = peers.slice().sort((a,c)=>SV[0].vals[c]-SV[0].vals[a]);
+  pin(idx.map(i=>({i}))).forEach((r,k)=>idx[k]=r.i);
+  const mxRows = idx.map(i=>`<tr class="${i===st.focus?'focus':''}"><td class="t name">${fTag(i)}<a class="lnk" data-h="${i}">${esc(H[i].n)}</a></td><td class="t dim">${H[i].c}</td><td class="t">${esc(H[i].p)}</td><td>${esc(H[i].l)}</td><td>${n0(H[i].u)}</td>` +
+    SV.map(s=>{ if(s.amt[i]===0) return `<td class="c z">–</td>`;
+      const t = `${META[s.id].t}\nเงินที่ได้รับ ${n0(s.amt[i])} บาท\n${isLM(s.id)?'OP ต่อครั้ง':'ต่อหัว UC'} ${n0(s.pc[i])} บาท\nอันดับ ${s.rk[i]} จาก ${s.n} ใน ${grpLabel()}`;
+      return `<td class="c" data-hc="1" style="${cellBg(metricPc,s.rk[i],s.n)}" data-tip="${esc(t)}"><b>${n0(metricPc? s.pc[i] : s.amt[i])}</b><i>#${s.rk[i]}</i></td>`; }).join('') + `</tr>`).join('');
+  const srcRows = SIDS.map((id,k)=>evalDef({name:`${META[id].t} (${META[id].f})${isLM(id)?' — OP ต่อครั้ง':''}`, num:SV[k].amt, vals:SV[k].pc}, hi, peers));
+  const dd = detailDefs(st.dsrc, st.dlvl), sd = S[st.dsrc];
+  const dTot = evalDef(dd.tot, hi, peers);
+  const dItems = dd.items.map(x=>evalDef(x,hi,peers)).filter(r=>r.v!==0 || r.others>0);
+  if(!isLM(st.dsrc)) dItems.sort((a,c)=>(c.v!==0)-(a.v!==0) || c.mine-a.mine || c.others-a.others);
+  return `
+    <div class="hhead"><h2>${esc(h.n)}</h2><span>รหัส ${h.c} · เขต ${h.r} · ${esc(h.p)} · ${esc(h.t)} ขนาด ${esc(h.l)} · ${esc(h.g)}</span><span>ประชากร UC ${n0(h.u)} · เตียง ${n0(h.b)}</span><span>เทียบกับ ${peers.length} รพ. ในกลุ่ม “${esc(grpLabel())}”</span></div>
+    <div class="legend"><span><i class="sw s"></i>ตำแหน่งของ รพ. นี้ในกลุ่ม (ขวา = อันดับสูง, ขีดกลาง = ตำแหน่งกลาง)</span>${legendGrad()}<span><span class="tag warn">ไม่มียอด</span>= รพ. นี้ไม่มียอด แต่ รพ. อื่นในกลุ่มมี — ควรตรวจสอบ</span></div>
+    <h3 class="sec" style="margin-top:6px">ผลงานของ ${esc(h.n)} แยกตามแหล่งข้อมูล</h3>
+    <div class="panel"><div class="scroll"><table>
+      <thead><tr><th class="t">แหล่งข้อมูล</th><th>เงินที่ได้รับ (บาท)</th><th>ต่อหัว UC / OP ต่อครั้ง (บาท)</th><th>อันดับ<br>ในกลุ่ม</th><th>อันดับต่อหัว<br>ทั้งประเทศ</th><th>มัธยฐานกลุ่ม<br>(ต่อหัว)</th><th>เทียบมัธยฐาน</th><th class="t">ตำแหน่งในกลุ่ม</th></tr></thead>
+      <tbody>${srcRows.map(r=>lineDetail(r,false)).join('')}</tbody></table></div></div>
+    <h3 class="sec">รายละเอียด: ${esc(META[st.dsrc].t)} (${META[st.dsrc].f}) ของ ${esc(h.n)} เทียบกับกลุ่ม</h3>
+    <div class="panel"><div class="scroll"><table>
+      <thead><tr><th class="t">${esc(META[st.dsrc].item)}${!sd.flat && !isLM(st.dsrc)?` <span class="seg" id="dlvl" style="margin-left:8px;vertical-align:middle"><button type="button" data-v="m" aria-pressed="${st.dlvl==='m'}">หลัก</button><button type="button" data-v="s" aria-pressed="${st.dlvl==='s'}">ย่อย</button></span>`:''}</th><th>เงินที่ได้รับ (บาท)</th><th>ต่อหัว UC / รายครั้ง (บาท)</th><th>อันดับ<br>ในกลุ่ม</th><th>อันดับ<br>ทั้งประเทศ</th><th>มัธยฐานกลุ่ม</th><th>เทียบมัธยฐาน</th><th class="t">ตำแหน่งในกลุ่ม</th></tr></thead>
+      <tbody>${(dTot.v!==0?lineDetail(dTot,true):'')}${dItems.map(r=>lineDetail(r,false)).join('')}</tbody></table></div></div>
+    <h3 class="sec">เปรียบเทียบทุก รพ. ในกลุ่ม “${esc(grpLabel())}” ข้ามแหล่งข้อมูล</h3>
+    <div class="legend">${metricPc?legendGrad():'<span>เฉดสีน้ำเงิน = อันดับสูงในกลุ่ม</span>'}<span>ค่าในช่อง: ${metricPc?'บาท / หัว UC':'เงินที่ได้รับ (บาท)'} · #n = อันดับในกลุ่ม · รพ. ที่โฟกัสอยู่บนสุดพร้อมกรอบ</span></div>
+    <div class="panel"><div class="scroll"><table class="mx">
+      <thead><tr><th class="t">หน่วยบริการ</th><th class="t">รหัส</th><th class="t">จังหวัด</th><th>ขนาด</th><th>ประชากร UC</th>${SIDS.map(id=>`<th class="h" data-tip="${esc(META[id].t+' ('+META[id].f+')')}">${esc(META[id].t.replace('ข้อมูลการเบิกชดเชย','').replace('ข้อมูล',''))}<br><span style="font-weight:400">${META[id].f}${isLM(id)&&metricPc?' · OP ต่อครั้ง':''}</span></th>`).join('')}</tr></thead>
+      <tbody>${mxRows}</tbody></table></div></div>
+    <p class="note">เรียงจาก ${esc(META.L1.t)} (L1_budget) สูงสุดไปต่ำสุด · L4 (โรคไต) มีเฉพาะ รพ. ที่จัดบริการ · L7/L8 ในตารางนี้ใช้ OP ต่อครั้ง (เมื่อเลือกต่อหัว UC) หรือยอดรวม OP+IP (เมื่อเลือกเงินที่ได้รับ) · L7 ไม่นำ รพ. ขนาด A, S, รพ.เชียงคำ และ รพ.สันป่าตอง มาคำนวณ (ข้อมูลไม่ครบ) จึงแสดงเป็น “–”</p>`;
+}
+
+/* ---------- orchestration ---------- */
+function renderTabs(){
+  $('#tabs').innerHTML = TABS.map((t,i)=>`<button role="tab" type="button" data-v="${t.id}" aria-selected="${t.id===st.tab}"><b>${i+1}. ${esc(t.t)}</b><small>${esc(t.s)}</small></button>`).join('');
+}
+function defaultFocus(){
+  const peers = peerIdx(); if(!peers.length) return null;
+  const pc = pcVec(build('L1',0).total); return peers.slice().sort((a,b)=>pc[b]-pc[a])[0];
+}
+function render(){
+  if(st.tab==='HP' && st.focus===null){ st.focus = defaultFocus(); if(st.focus===null){ st.mode='filter'; setSeg('mode','filter'); st.focus = defaultFocus(); } }
+  buildFilters(); syncFocusInput(); renderChips(); applyVisibility();
+  $('#ctx').innerHTML = ctxLine();
+  tip.style.display = 'none';
+  let h;
+  if(!isSrc()) h = viewHp();
+  else if(isLM() && st.view==='rk') h = viewRkLM();
+  else h = ({rk:viewRk, grp:viewGrp, mx:viewMx})[st.view]();
+  $('#main').innerHTML = h;
+}
+function switchTab(id){
+  st.tab = id; st.sort = {k:'prim',dir:1}; renderTabs(); buildMetricSelect();
+  if(isSrc()){ buildItemSelect(); buildPartSelect(); }
+  render();
+}
+function setFocus(i){ st.focus = i; render(); }
+makeCombo('focus-in','focus-ls', i=>setFocus(i));
+makeCombo('add-in','add-ls', i=>{ if(!st.custom.includes(i)) st.custom.push(i); $('#add-in').value=''; render(); }, {exclude:i=>st.custom.includes(i) || excl(i)});
+$('#focus-clr').addEventListener('click', ()=>{ setFocus(null); });
+$('#tabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(b) switchTab(b.dataset.v); });
+$('#mode').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; const v=b.dataset.v;
+  if(v==='custom' && st.mode!=='custom' && !st.custom.length) st.custom = ALL.filter(i=>matchF(i));
+  if(v==='custom' && st.custom.length===NH) st.custom = [];
+  st.mode = v; setSeg('mode',v); render(); });
+['fr','fp','fl','fg'].forEach(id=>$('#'+id).addEventListener('change', e=>{ st.f[{fr:'r',fp:'p',fl:'l',fg:'g'}[id]] = e.target.value; render(); }));
+$('#cdim').addEventListener('change', e=>{ st.cdim=e.target.value; render(); });
+$('#metric').addEventListener('change', e=>{ if(isSrc() && isLM()) st.lm=e.target.value; else st.metric=e.target.value; render(); });
+$('#item').addEventListener('change', e=>{ st.item[st.tab]=e.target.value; render(); });
+$('#part').addEventListener('change', e=>{ st.part.L3=+e.target.value; buildItemSelect(); render(); });
+$('#view').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; st.view=b.dataset.v; setSeg('view',st.view); render(); });
+$('#lvl').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; st.lvl=b.dataset.v; setSeg('lvl',st.lvl); render(); });
+$('#dsrc').addEventListener('change', e=>{ st.dsrc=e.target.value; render(); });
+document.addEventListener('click', e=>{
+  const rm = e.target.closest('button[data-rm]');
+  if(rm){ st.custom = st.custom.filter(i=>i!==+rm.dataset.rm); render(); return; }
+  if(e.target.closest('button[data-clear]')){ st.custom = []; render(); return; }
+  const sh = e.target.closest('th[data-sort]');
+  if(sh){ const k=sh.dataset.sort; if(st.sort.k===k) st.sort.dir*=-1; else st.sort={k,dir:(k==='name'||k==='prov'||k==='code'||k==='ra'||k==='rp'||k==='rr')?1:-1}; render(); return; }
+  const dl = e.target.closest('#dlvl button');
+  if(dl){ st.dlvl=dl.dataset.v; render(); return; }
+  if(e.target.closest('a[data-hp]')){ switchTab('HP'); scrollTo({top:0}); return; }
+  const a = e.target.closest('a[data-h]');
+  if(a){ setFocus(+a.dataset.h); return; }
+  const f = e.target.closest('a[data-f]');
+  if(f){ const b=curB(); if(b.map.has(f.dataset.f)||f.dataset.f==='all'){ st.item[st.tab]=f.dataset.f; $('#item').value=f.dataset.f; st.view='rk'; setSeg('view','rk'); render(); scrollTo({top:0}); } return; }
+});
+$('#hsub').textContent = D.META.sub; $('#hasof').textContent = D.META.asof; $('#fpop').textContent = D.META.pop;
+buildDsrc(); renderTabs(); buildMetricSelect(); buildItemSelect(); buildPartSelect(); setSeg('view',st.view); setSeg('lvl',st.lvl); render();
+</script>
+</body></html>
