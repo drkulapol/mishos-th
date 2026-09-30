@@ -66,6 +66,11 @@ section#main{padding-top:14px}
 .stat .v small{font-size:13px;font-weight:400;color:var(--ink-3)}
 .stat .k{font-size:12px;color:var(--ink-3)}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.xbar{display:flex;justify-content:flex-end;gap:8px;margin:8px 0 6px}
+.xbtn{font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;line-height:1.2}
+.xbtn:hover{border-color:var(--blue);color:var(--blue-ink)}
+.xbtn:active{transform:translateY(1px)}
+.xbtn svg{width:13px;height:13px;flex:none}
 .scroll{overflow:auto;max-width:100%;max-height:min(74vh,900px)}
 table{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums}
 th,td{padding:7px 10px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap;vertical-align:middle}
@@ -113,6 +118,8 @@ table.mx td.g{background:var(--surface-2);min-width:130px;font-weight:500}
 .empty{padding:26px 18px;color:var(--ink-2)}
 .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);margin-left:6px}
 .tag.warn{border-color:var(--hi);color:var(--hi)}
+.tag.ok{border-color:#2f9e58;color:#2f9e58}
+.exec-hi{background:color-mix(in srgb,var(--blue) 5%,var(--surface));border-color:var(--blue)}
 .hhead{display:flex;flex-wrap:wrap;gap:6px 28px;margin-bottom:12px;align-items:baseline}
 .hhead h2{margin:0;font-size:18px;font-weight:600}
 .hhead span{color:var(--ink-2);font-size:13px}
@@ -256,14 +263,15 @@ const SIDS = ['L2','L3','L4','L5','L6','L7','L8','L1'];
 /* L7 (กรมบัญชีกลาง): ตัด รพ. ที่ข้อมูลไม่ครบ ออกจากการคำนวณทั้งหมด */
 const EX7 = new Set(ALL.filter(i=>H[i].l==='A' || H[i].l==='S' || H[i].n==='รพ.เชียงคำ' || H[i].n==='รพ.สันป่าตอง'));
 const excl = i => st.tab==='L7' && EX7.has(i);
-const TABS = SIDS.map(id=>({id, t:META[id].t, s:META[id].f})).concat([{id:'HP', t:'สรุปข้อมูลวิเคราะห์รายโรงพยาบาล', s:'ทุกแหล่งข้อมูล'}]);
+const TABS = SIDS.map(id=>({id, t:META[id].t, s:META[id].f})).concat([{id:'HP', t:'สรุปข้อมูลวิเคราะห์รายโรงพยาบาล', s:'ทุกแหล่งข้อมูล'}, {id:'EXEC', t:'บทสรุปผู้บริหารรายโรงพยาบาล', s:'ทำได้ดี / โอกาสพัฒนา'}]);
 const LM_LABEL = {opVisit:'ยอดชดเชยรายครั้ง OP (ยอดชดเชย OP ÷ จำนวน OP visit)'};
 const st = {tab:'L2', mode:'filter', f:{r:'all',p:'all',l:'all',g:D.DEF.g}, custom:[], focus:D.DEF.focus, metric:'pc', lm:'opVisit', view:'mx', item:{}, part:{}, lvl:'s', dlvl:'m', cdim:'l', sort:{k:'prim',dir:1}, dsrc:'L2'};
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const n0 = v => Math.round(v).toLocaleString('en-US');
 const isLM = (id=st.tab) => id==='L7' || id==='L8';
-const isSrc = () => st.tab!=='HP';
+const isSrc = () => st.tab!=='HP' && st.tab!=='EXEC';
 
 /* ---------- heat (red → yellow → green), rank-based ---------- */
 function heatRGB(t){
@@ -327,7 +335,7 @@ function makeCombo(inId, lsId, onPick, opts={}){
 }
 function syncFocusInput(){
   const inp = $('#focus-in'); inp.value = st.focus===null ? '' : `${H[st.focus].c} · ${H[st.focus].n}`;
-  $('#focus-clr').hidden = st.focus===null || st.tab==='HP';
+  $('#focus-clr').hidden = st.focus===null || st.tab==='HP' || st.tab==='EXEC';
 }
 function renderChips(){
   const box = $('#chips'); box.hidden = st.mode!=='custom';
@@ -433,11 +441,11 @@ function buildDsrc(){
 }
 function setSeg(id,v){ document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===v)); }
 function applyVisibility(){
-  const src = isSrc(), lm = src && isLM();
+  const src = isSrc(), lm = src && isLM(), exec = st.tab==='EXEC';
   const vis = {
-    fr: st.mode==='filter', fp: st.mode==='filter', fl: st.mode==='filter', fg: st.mode==='filter', add: st.mode==='custom',
+    mode: !exec, fr: st.mode==='filter' && !exec, fp: st.mode==='filter' && !exec, fl: st.mode==='filter' && !exec, fg: st.mode==='filter' && !exec, add: st.mode==='custom' && !exec,
     cdim: src && st.view==='grp', item: src && !lm && st.view!=='mx', part: st.tab==='L3',
-    view: src, lvl: src && !lm && !S[st.tab].flat && st.view==='mx', dsrc: !src, metric: !lm
+    view: src, lvl: src && !lm && !S[st.tab].flat && st.view==='mx', dsrc: !src && !exec, metric: !lm && !exec
   };
   Object.keys(vis).forEach(k=>{ const el=$('#c-'+k); if(el) el.hidden = !vis[k]; });
   $('#view-mx').textContent = lm ? 'ตัวชี้วัด × รพ.' : 'รายการ × รพ.';
@@ -445,6 +453,11 @@ function applyVisibility(){
 function ctxLine(){
   const add = (focusAdded() ? ` <span class="tag warn">รพ. โฟกัสไม่ตรงตัวกรอง — เพิ่มเข้ากลุ่มให้อัตโนมัติ</span>` : '') + (st.focus!==null && excl(st.focus) ? ` <span class="tag warn">รพ. โฟกัสไม่ถูกนำมาคำนวณในแถบนี้ (ข้อมูลไม่ครบ)</span>` : '');
   const np = peerIdx().length;
+  if(st.tab==='EXEC'){
+    if(st.focus===null) return `<b>บทสรุปผู้บริหารรายโรงพยาบาล</b> · เลือก รพ. จากช่อง “โฟกัส รพ.” ด้านบนก่อน`;
+    const hh = H[st.focus];
+    return `<b>บทสรุปผู้บริหารรายโรงพยาบาล: ${esc(hh.n)}</b> · กลุ่มเปรียบเทียบ (ตามกลุ่มระดับบริการจากไฟล์ต้นฉบับ): <b>${esc(hh.g)}</b><span class="src">กลุ่มเปรียบเทียบของแถบนี้ไม่ใช้ตัวกรองด้านบน — อิงตาม GroupName ของ รพ. ที่เลือกเสมอ</span>`;
+  }
   if(!isSrc()) return `<b>สรุปข้อมูลวิเคราะห์รายโรงพยาบาล</b> · กลุ่มเปรียบเทียบ: <b>${esc(grpLabel())}</b> (${np} แห่ง) · ${st.metric==='pc'?'เงินที่ได้รับ ÷ ประชากร UC':'เงินที่ได้รับ (บาท)'}${add}<span class="src">แต่ละแหล่งข้อมูลเป็นคนละมุมมอง ไม่ควรรวมยอดข้ามแหล่ง</span>`;
   const m = META[st.tab], b = isLM()?null:curB();
   const it = isLM() ? LM_LABEL[st.lm] : (st.view==='mx' ? 'ทุกรายการ' : itemName(b, curItem()));
@@ -700,8 +713,214 @@ function viewHp(){
     <div class="legend">${metricPc?legendGrad():'<span>เฉดสีน้ำเงิน = อันดับสูงในกลุ่ม</span>'}<span>ค่าในช่อง: ${metricPc?'บาท / หัว UC':'เงินที่ได้รับ (บาท)'} · #n = อันดับในกลุ่ม · รพ. ที่โฟกัสอยู่บนสุดพร้อมกรอบ</span></div>
     <div class="panel"><div class="scroll"><table class="mx">
       <thead><tr><th class="t">หน่วยบริการ</th><th class="t">รหัส</th><th class="t">จังหวัด</th><th>ขนาด</th><th>ประชากร UC</th>${SIDS.map(id=>`<th class="h" data-tip="${esc(META[id].t+' ('+META[id].f+')')}">${esc(META[id].t.replace('ข้อมูลการเบิกชดเชย','').replace('ข้อมูล',''))}<br><span style="font-weight:400">${META[id].f}${isLM(id)&&metricPc?' · OP ต่อครั้ง':''}</span></th>`).join('')}</tr></thead>
-      <tbody>${mxRows}</tbody></table></div></div>
-    <p class="note">เรียงจาก ${esc(META.L1.t)} (L1_budget) สูงสุดไปต่ำสุด · L4 (โรคไต) มีเฉพาะ รพ. ที่จัดบริการ · L7/L8 ในตารางนี้ใช้ OP ต่อครั้ง (เมื่อเลือกต่อหัว UC) หรือยอดรวม OP+IP (เมื่อเลือกเงินที่ได้รับ) · L7 ไม่นำ รพ. ขนาด A, S, รพ.เชียงคำ และ รพ.สันป่าตอง มาคำนวณ (ข้อมูลไม่ครบ) จึงแสดงเป็น “–”</p>`;
+      <tbody>${mxRows}</tbody></table></div></div>`;
+}
+
+/* ---------- tab: executive summary (fixed peer group by GroupName) ---------- */
+const EXEC_SCOPE = [
+  {src:'L1', label:'L1_budget', only:['กองทุนเอดส์','ค่าบริการฟื้นฟูสมรรถภาพด้านการแพทย์','งบแพทย์แผนไทย']},
+  {src:'L2', label:'L2_statementuc', minPC:2, exclude:['OPCS','OPLG','IPCS','IPLG','OPKTMN','IPKTMN','OTKTMN','DM22','OTCS','OTLG']},
+  {src:'L5', label:'L5_moph_2205'},
+  {src:'L6', label:'L6_ktp_2263'}
+];
+let EXEC_ITEMS = null;
+function execItems(){
+  if(EXEC_ITEMS) return EXEC_ITEMS;
+  const items = [], totalPop = sumOn(POP, ALL);
+  EXEC_SCOPE.forEach(sc=>{
+    build(sc.src,0).list.filter(f=> sc.only ? (f.lvl==='s' && sc.only.includes(f.name)) : f.lvl==='m').forEach(f=>{
+      if(sc.minPC && (!totalPop || f.sum/totalPop < sc.minPC)) return;
+      if(sc.exclude && sc.exclude.includes(f.key.split(':')[1])) return;
+      let arr = f.arr, nm = f.name;
+      if(sc.src==='L1' && f.name==='งบแพทย์แผนไทย'){
+        const hc22 = build('L2',0).map.get('m:HC22');
+        if(hc22){ arr = arr.map((v,i)=>Math.max(0, v-hc22.arr[i])); nm = 'งบแพทย์แผนไทย (หัก HC22 ยาสมุนไพร FS แล้ว)'; }
+      }
+      items.push({id:sc.src+':'+f.key.split(':')[1], src:sc.label, name:nm, arr});
+    });
+  });
+  const lm7 = lmMeas('L7'), lm8 = lmMeas('L8');
+  items.push({id:'L7:CSMBS', src:'L7_csmbs · ต่อครั้ง OP', name:'CSMBS (สิทธิข้าราชการ)', arr:lm7.d.opA, visitArr:lm7.d.opN, pvArr:lm7.M.opVisit.vals, perVisit:true});
+  items.push({id:'L8:LGO', src:'L8_lgo · ต่อครั้ง OP', name:'อปท. (LGO)', arr:lm8.d.opA, visitArr:lm8.d.opN, pvArr:lm8.M.opVisit.vals, perVisit:true});
+  return EXEC_ITEMS = items;
+}
+const EXEC_SKIP_CS_SIZES = ['A','S','M1'];
+function execSkipCS(focus){ return EXEC_SKIP_CS_SIZES.includes(H[focus].l); }
+function execRows(focus){
+  const skipCS = execSkipCS(focus);
+  const items = execItems().filter(it=> !skipCS || it.id!=='L7:CSMBS');
+  const peers = ALL.filter(i=>H[i].g===H[focus].g), pop = H[focus].u;
+  return items.map(it=>{
+    const pv = !!it.perVisit;
+    const arr = it.arr, ownAmt = arr[focus];
+    const ownPC = pv ? (it.pvArr[focus]||0) : (pop? ownAmt/pop : 0);
+    const peerPC = pv ? peers.map(i=> it.pvArr[i]||0) : peers.map(i=> H[i].u? arr[i]/H[i].u : 0);
+    const n = peerPC.length;
+    const mean = peerPC.reduce((a,b)=>a+b,0)/(n||1);
+    const sd = Math.sqrt(peerPC.reduce((a,b)=>a+(b-mean)*(b-mean),0)/(n||1));
+    const max = Math.max(0,...peerPC);
+    if(ownAmt===0){
+      const zPeers = peers.filter(i=>arr[i]===0).length;
+      return {...it, ownAmt, ownPC, mean, sd, max, n, status: zPeers>=n?'zeroB':'zeroA', zPeers, doPeers:n-zPeers};
+    }
+    const status = ownPC > mean+sd ? 'good' : (ownPC < mean ? 'opp' : 'normal');
+    const mult = pv ? (it.visitArr[focus]||0) : pop;
+    return {...it, ownAmt, ownPC, mean, sd, max, n, status, upLow: Math.round((mean-ownPC)*mult), upHigh: Math.round((max-ownPC)*mult)};
+  });
+}
+function execRow(r, kind){
+  const nm = `<td class="t name">${esc(r.name)}<span class="dim" style="font-size:11px;display:block">${esc(r.src)}</span></td>`;
+  if(kind==='good') return `<tr>${nm}<td>${r.ownPC.toFixed(2)}</td><td>${r.mean.toFixed(2)}</td><td>${r.max.toFixed(2)}</td></tr>`;
+  if(kind==='opp') return `<tr>${nm}<td>${r.ownPC.toFixed(2)}</td><td>${r.mean.toFixed(2)}</td><td>${r.max.toFixed(2)}</td><td class="hc"><b>${n0(r.upLow)} – ${n0(r.upHigh)}</b></td></tr>`;
+  return `<tr>${nm}<td>${r.doPeers} / ${r.n} แห่ง</td><td>${r.mean.toFixed(2)}</td><td>${r.max.toFixed(2)}</td></tr>`;
+}
+function viewExec(){
+  if(st.focus===null) return `<div class="panel empty"><b>เลือกโรงพยาบาลจากช่อง “โฟกัส รพ.” ด้านบนก่อน</b></div>`;
+  const h = H[st.focus], rows = execRows(st.focus), peers = ALL.filter(i=>H[i].g===h.g);
+  const good = rows.filter(r=>r.status==='good').sort((a,b)=>(b.ownPC-b.mean)-(a.ownPC-a.mean));
+  const opp = rows.filter(r=>r.status==='opp').sort((a,b)=>b.upHigh-a.upHigh);
+  const zeroA = rows.filter(r=>r.status==='zeroA').sort((a,b)=>b.doPeers-a.doPeers);
+  const zeroB = rows.filter(r=>r.status==='zeroB');
+  const normalN = rows.filter(r=>r.status==='normal').length;
+  const tOpp = opp.reduce((a,r)=>({lo:a.lo+Math.max(r.upLow,0), hi:a.hi+Math.max(r.upHigh,0)}),{lo:0,hi:0});
+  const m1 = v => v>=1e6 ? (v/1e6).toFixed(2)+' ล้าน' : n0(v);
+  return `
+    <div class="hhead"><h2>${esc(h.n)}</h2><span>รหัส ${h.c} · เขต ${h.r} · ${esc(h.p)} · ${esc(h.t)} ขนาด ${esc(h.l)}</span><span>ประชากร UC ${n0(h.u)}</span><span>กลุ่มเปรียบเทียบ: <b>${esc(h.g)}</b> (${peers.length} แห่งทั้งประเทศ)</span>${peers.length<3?'<span class="tag warn">กลุ่มเปรียบเทียบเล็กมาก — ผลเทียบอาจไม่นิ่ง</span>':''}</div>
+    <div class="stats">
+      <div class="stat"><div class="v" style="color:#2f9e58">${good.length}</div><div class="k">กองทุนที่ทำได้ดี</div></div>
+      <div class="stat"><div class="v" style="color:var(--hi)">${opp.length}</div><div class="k">กองทุนที่เป็นโอกาสพัฒนา</div></div>
+      <div class="stat"><div class="v">${zeroA.length}</div><div class="k">เป็น 0 — เพื่อนกลุ่มทำได้</div></div>
+      <div class="stat"><div class="v dim">${zeroB.length}</div><div class="k">เป็น 0 ทั้งกลุ่ม (บริบทพื้นที่)</div></div>
+    </div>
+    <div class="panel exec-hi" style="padding:16px 18px;margin-bottom:18px">
+      <div style="font-size:13px;color:var(--ink-2);margin-bottom:4px">ศักยภาพเพิ่มรายได้ (เฉพาะกองทุนที่เป็นโอกาสพัฒนา ไม่รวมรายการที่เป็น 0 ทั้งกลุ่ม)</div>
+      <div style="font-size:28px;font-weight:700">${m1(tOpp.lo)} – ${m1(tOpp.hi)} <small style="font-size:14px;font-weight:400;color:var(--ink-3)">บาท/ปี</small></div>
+      <div style="font-size:12px;color:var(--ink-3);margin-top:4px">ต่ำสุด = ถ้าทำได้เท่าค่าเฉลี่ยกลุ่ม · สูงสุด = ถ้าทำได้เท่า รพ. ที่ดีที่สุดในกลุ่ม — เป็นเพดานเชิงทฤษฎี ควรเลือกโฟกัสรายการมูลค่าสูงสุดก่อน</div>
+    </div>
+    <h3 class="sec" style="margin-top:0">กองทุนที่ทำได้ดี <span class="tag ok">${good.length} รายการ</span> — ผลงาน/หัว สูงกว่าค่าเฉลี่ยกลุ่ม + 1SD</h3>
+    ${good.length? `<div class="panel"><div class="scroll"><table>
+      <thead><tr><th class="t">รายการ</th><th>ผลงาน/หัว<br>(บาท)</th><th>ค่าเฉลี่ยกลุ่ม</th><th>สูงสุดกลุ่ม</th></tr></thead>
+      <tbody>${good.map(r=>execRow(r,'good')).join('')}</tbody></table></div></div>` : `<div class="panel empty">ไม่มีรายการที่ทำได้ดีกว่ากลุ่มอย่างชัดเจนในรอบนี้</div>`}
+    <h3 class="sec">กองทุนที่เป็นโอกาสพัฒนา <span class="tag warn">${opp.length} รายการ</span> — ผลงาน/หัว ต่ำกว่าค่าเฉลี่ยกลุ่ม</h3>
+    ${opp.length? `<div class="panel"><div class="scroll"><table>
+      <thead><tr><th class="t">รายการ</th><th>ผลงาน/หัว<br>(บาท)</th><th>ค่าเฉลี่ยกลุ่ม</th><th>สูงสุดกลุ่ม</th><th>เป้าหมายส่วนเพิ่ม<br>(บาท/ปี)</th></tr></thead>
+      <tbody>${opp.map(r=>execRow(r,'opp')).join('')}</tbody></table></div></div>` : `<div class="panel empty">ไม่มีรายการที่ต่ำกว่าค่าเฉลี่ยกลุ่มในรอบนี้</div>`}
+    <h3 class="sec">ผลงานเป็น 0 — เพื่อนกลุ่มบางส่วนทำได้ <span class="tag warn">${zeroA.length} รายการ · น่าตรวจสอบ</span></h3>
+    ${zeroA.length? `<div class="panel"><div class="scroll"><table>
+      <thead><tr><th class="t">รายการ</th><th>เพื่อนกลุ่มที่ทำได้</th><th>ค่าเฉลี่ยกลุ่ม</th><th>สูงสุดกลุ่ม</th></tr></thead>
+      <tbody>${zeroA.map(r=>execRow(r,'zeroA')).join('')}</tbody></table></div></div>` : `<div class="panel empty">ไม่มีรายการในกลุ่มนี้</div>`}
+    <h3 class="sec">ผลงานเป็น 0 ทั้งกลุ่ม — น่าจะเป็นบริบทพื้นที่ ไม่ใช่ประเด็นเฉพาะ รพ.นี้ <span class="tag">${zeroB.length} รายการ</span></h3>
+    ${zeroB.length? `<div class="panel" style="padding:14px 16px;color:var(--ink-2);font-size:13px;line-height:1.7">${zeroB.map(r=>esc(r.name)).join(' · ')}</div>` : `<div class="panel empty">ไม่มีรายการในกลุ่มนี้</div>`}
+    <p class="note">ขอบเขตข้อมูล: L1_budget เฉพาะกองทุนเอดส์ / ฟื้นฟูสมรรถภาพด้านการแพทย์ / แพทย์แผนไทย · L2_statementuc เฉพาะหมวดที่ต่อหัวประชากรทั้งประเทศ ≥ 2 บาท (ไม่รวม OPCS/OPLG/IPCS/IPLG/OPKTMN/IPKTMN ซึ่งวิเคราะห์แยกต่อครั้ง OP ใน L7/L8 ข้างต้นแล้ว, ไม่รวม OTKTMN/DM22/OTCS/OTLG) · งบแพทย์แผนไทย (L1_budget) หักผลงาน HC22 ยาสมุนไพร FS (L2_statementuc) ออกก่อนวิเคราะห์ เพราะเป็น subset ของกันเอง · L5_moph_2205 และ L6_ktp_2263 ทั้งหมด · L7_csmbs และ L8_lgo วิเคราะห์เป็นยอดชดเชยเฉลี่ยต่อครั้ง OP (ไม่ใช่ต่อหัวประชากร) เป้าหมายส่วนเพิ่ม = ส่วนต่างต่อครั้ง × จำนวน OP visit เดิมของ รพ. นั้น · รพ. ขนาด A/S/M1 ไม่วิเคราะห์ L7_csmbs เพิ่มเติม · ${normalN} รายการอยู่ในเกณฑ์ปกติ (ใกล้เคียงค่าเฉลี่ยกลุ่ม) จึงไม่แสดงในหน้านี้ · กลุ่มเปรียบเทียบอิงตาม “กลุ่มระดับบริการ (GroupName)” จากไฟล์ต้นฉบับเสมอ ไม่ใช้ตัวกรองด้านบน</p>`;
+}
+
+/* ---------- export: excel / pdf per table ---------- */
+const ICON_XLS = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 2h8l4 4v8H2z"/><path d="M10 2v4h4"/><path d="M5 8l3 4M8 8l-3 4" stroke-width="1.3"/></svg>';
+const ICON_PDF = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 2h8l4 4v8H2z"/><path d="M10 2v4h4"/><path d="M4.5 12.5h1.2M6.5 9.5v3M6.5 9.5h.8a1 1 0 0 1 0 2h-.8M9 9.5v3M9 9.5h1"/></svg>';
+// running inside claude.ai's artifact viewer, a blob-URL <a download> click and a window.open() popup
+// are both blocked by the frame; a page there must hand files to the viewer via the `downloads`
+// capability instead. A page opened as a plain file (GitHub Pages, a saved .html, etc.) has no
+// window.claude at all, so it keeps using ordinary browser downloads / a print popup.
+let DL = null;
+const DL_READY = (async () => {
+  try{ if(window.claude && window.claude.use) DL = await window.claude.use('downloads'); }catch(e){}
+})();
+async function saveBlob(filename, blob){
+  await DL_READY;
+  if(DL){
+    try{ await DL.save({filename, data: blob}); return true; }
+    catch(e){ if(e && e.code!=='declined') alert('บันทึกไฟล์ไม่สำเร็จ: '+(e&&e.message||e)); return false; }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+  return true;
+}
+function plainCtx(){
+  const c = $('#ctx').cloneNode(true);
+  c.querySelectorAll('.src,.tag').forEach(n=>n.remove());
+  return c.textContent.replace(/\s+/g,' ').trim();
+}
+function nearestHeading(el){
+  let n = el.previousElementSibling;
+  while(n){ if(n.tagName==='H2'||n.tagName==='H3') return n.textContent.trim(); n = n.previousElementSibling; }
+  return null;
+}
+function slug(s){ return (s||'ข้อมูล').replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,'_').slice(0,90); }
+function stamp(){ const d=new Date(),p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}`; }
+function cloneWithComputed(table){
+  const clone = table.cloneNode(true);
+  const origs = table.querySelectorAll('td,th'), clones = clone.querySelectorAll('td,th');
+  origs.forEach((el,i)=>{
+    const cs = getComputedStyle(el), bg = cs.backgroundColor, col = cs.color;
+    let st = (clones[i].getAttribute('style')||'').replace(/background(-color)?:[^;]*;?|color:[^;]*;?/g,'');
+    if(bg && bg!=='rgba(0, 0, 0, 0)') st += `background-color:${bg};`;
+    if(col) st += `color:${col};`;
+    clones[i].setAttribute('style', st);
+  });
+  clone.querySelectorAll('[data-tip]').forEach(n=>n.removeAttribute('data-tip'));
+  return clone;
+}
+function tableToCSV(table, title){
+  const esc_ = v => { v = String(v==null?'':v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
+  const rows = [[title], []];
+  table.querySelectorAll('thead tr').forEach(tr=>{
+    rows.push([...tr.children].map(c=>c.textContent.replace(/\s+/g,' ').trim()));
+  });
+  table.querySelectorAll('tbody tr').forEach(tr=>{
+    rows.push([...tr.children].map(c=>c.textContent.replace(/\s+/g,' ').trim()));
+  });
+  return rows.map(r=>r.map(esc_).join(',')).join('\r\n');
+}
+function printableHtml(title, tableOuterHTML, withPrintButton){
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+  <style>
+    *{box-sizing:border-box} body{font-family:'IBM Plex Sans Thai','Noto Sans Thai','Sarabun',system-ui,sans-serif;margin:18px;color:#14191f}
+    h2{font-size:16px;margin:0 0 3px} .meta{font-size:11px;color:#6b7280;margin-bottom:14px}
+    table{border-collapse:collapse;width:100%;font-size:10.5px;font-variant-numeric:tabular-nums}
+    th,td{border:1px solid #d0d5db;padding:4px 6px;text-align:right;white-space:nowrap}
+    th{background:#f0f2f4;text-align:center;font-weight:600} td.t,th.t,td.f,th.f,td.name{text-align:left;white-space:normal}
+    a{color:inherit;text-decoration:none} i,small{font-weight:400}
+    .btnbar{margin-bottom:12px} .btnbar button{font:inherit;font-size:12px;padding:6px 14px;border:1px solid #c7ccd3;border-radius:6px;background:#fff;cursor:pointer}
+    @media print{ .btnbar{display:none} @page{ size:A4 landscape; margin:10mm } }
+  </style></head><body>
+  ${withPrintButton?'<div class="btnbar"><button onclick="window.print()">พิมพ์ / บันทึกเป็น PDF</button></div>':''}
+  <h2>${esc(title)}</h2><div class="meta">โรงพยาบาลรัฐทั้งประเทศ · ปีงบประมาณ 2569 · สร้างเมื่อ ${new Date().toLocaleString('th-TH')}</div>
+  ${tableOuterHTML}
+  </body></html>`;
+}
+async function exportExcel(table, title){
+  const csv = tableToCSV(table, title);
+  const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  await saveBlob(`${slug(title)}_${stamp()}.csv`, blob);
+}
+async function exportPDF(table, title){
+  const clone = cloneWithComputed(table);
+  await DL_READY;
+  if(DL){
+    const html = printableHtml(title, clone.outerHTML, false);
+    await saveBlob(`${slug(title)}_${stamp()}.html`, new Blob([html], {type:'text/html'}));
+    return;
+  }
+  const w = window.open('', '_blank');
+  if(!w){ alert('เบราว์เซอร์บล็อกหน้าต่างป๊อปอัป กรุณาอนุญาตป๊อปอัปสำหรับหน้านี้แล้วลองใหม่'); return; }
+  w.document.write(printableHtml(title, clone.outerHTML, true));
+  w.document.close(); w.focus();
+}
+function attachExport(){
+  $$('#main .panel').forEach(panel=>{
+    const table = panel.querySelector('table');
+    if(!table) return;
+    const title = nearestHeading(panel) || plainCtx();
+    const bar = document.createElement('div'); bar.className = 'xbar';
+    bar.innerHTML = `<button type="button" class="xbtn" data-k="xls">${ICON_XLS} Excel (CSV)</button><button type="button" class="xbtn" data-k="pdf">${ICON_PDF} PDF</button>`;
+    bar.querySelector('[data-k="xls"]').addEventListener('click', ()=>exportExcel(table, title));
+    bar.querySelector('[data-k="pdf"]').addEventListener('click', ()=>exportPDF(table, title));
+    panel.parentNode.insertBefore(bar, panel);
+  });
 }
 
 /* ---------- orchestration ---------- */
@@ -713,15 +932,17 @@ function defaultFocus(){
   const pc = pcVec(build('L1',0).total); return peers.slice().sort((a,b)=>pc[b]-pc[a])[0];
 }
 function render(){
-  if(st.tab==='HP' && st.focus===null){ st.focus = defaultFocus(); if(st.focus===null){ st.mode='filter'; setSeg('mode','filter'); st.focus = defaultFocus(); } }
+  if((st.tab==='HP'||st.tab==='EXEC') && st.focus===null){ st.focus = defaultFocus(); if(st.focus===null){ st.mode='filter'; setSeg('mode','filter'); st.focus = defaultFocus(); } }
   buildFilters(); syncFocusInput(); renderChips(); applyVisibility();
   $('#ctx').innerHTML = ctxLine();
   tip.style.display = 'none';
   let h;
-  if(!isSrc()) h = viewHp();
+  if(st.tab==='HP') h = viewHp();
+  else if(st.tab==='EXEC') h = viewExec();
   else if(isLM() && st.view==='rk') h = viewRkLM();
   else h = ({rk:viewRk, grp:viewGrp, mx:viewMx})[st.view]();
   $('#main').innerHTML = h;
+  attachExport();
 }
 function switchTab(id){
   st.tab = id; st.sort = {k:'prim',dir:1}; renderTabs(); buildMetricSelect();
