@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 สร้าง dashboard "กำกับผลงานการชดเชยรายกองทุน ทั้งประเทศ" (index.html ไฟล์เดียว)
-ใช้หน้าตาและโค้ดเดียวกับ mishos-rh1 (template_th.html) + ข้อมูลจาก nhso_th_2569_rXX.json
+ใช้หน้าตาและโค้ดเดียวกับ mishos-rh1 (template_th.html) + ข้อมูลจาก nhso_th_<ปีงบ>_rXX.json
 
-    python build_th.py                    # อ่านไฟล์ในโฟลเดอร์เดียวกัน
+    python build_th.py --fy 2570 --out index.html --yearnav "<a ...>"   # ปีงบ 2570
+    python build_th.py --fy 2569 --out 2569.html                       # ปีงบ 2569
+    (หรือใช้ build_all.py สร้างทั้งสองปีพร้อมลิงก์เลือกปี)
     python build_th.py --src D:/nhso --out index.html
-ต้องมี: data.xlsx, nhso_th_2569_r*.json, template_th.html, labels_rh1.json
+ต้องมี: data.xlsx, nhso_th_<ปีงบ>_r*.json, template_th.html, labels_rh1.json
 """
 import argparse, glob, json, re
 from collections import Counter, defaultdict
@@ -47,6 +49,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=".")
     ap.add_argument("--out", default="index.html")
+    ap.add_argument("--fy", type=int, default=2569)
+    ap.add_argument("--glob", default=None, help="รูปแบบชื่อไฟล์ข้อมูล (ค่าเริ่มต้น nhso_th_<fy>_r*.json)")
+    ap.add_argument("--yearnav", default="", help="HTML ลิงก์เลือกปีงบ")
     ap.add_argument("--hospitals", default="data.xlsx", help="ไฟล์รายชื่อ รพ./กลุ่ม/ประชากร UC")
     a = ap.parse_args()
     src = Path(a.src)
@@ -55,9 +60,9 @@ def main():
 
     hosp, pop_col = load_hosp(src / a.hospitals)
     raw, regions, fetched = {}, set(), []
-    for f in sorted(glob.glob(str(src / "nhso_th_2569_r*.json"))):
+    for f in sorted(glob.glob(str(src / (a.glob or f"nhso_th_{a.fy}_r*.json")))):
         d = json.load(open(f, encoding="utf-8"))
-        regions.add(int(d.get("region", 0))); fetched.append(d.get("fetched_at", "")[:10])
+        regions.add(int(d.get("region", 0))); fetched.append(d.get("fetched_at", ""))
         raw.update(d["data"])
     H = [h for h in hosp if h["c"] in raw]
     HI = {h["c"]: i for i, h in enumerate(H)}
@@ -117,13 +122,14 @@ def main():
     pop_date = f"{m.group(1)} เม.ย. {m.group(2) if len(m.group(2)) == 4 else '25' + m.group(2)}" if m else pop_col
     last = max(fetched) if fetched else ""
     th_date = f"{int(last[8:10])} {TH_M[int(last[5:7])-1]} {int(last[:4])+543}" if last else "-"
+    if len(last) >= 16: th_date += f" {last[11:16]} น."
     reg_txt = "ครบ 12 เขตสุขภาพ" if len(regions) == 12 else "เขตสุขภาพที่ " + ", ".join(map(str, sorted(regions)))
     D = {"H": H, "S": S, "GORDER": gorder, "RORDER": [str(i) for i in range(1, 13)],
          "DEF": {"g": H[fidx]["g"] if fidx is not None else "all", "focus": fidx},
-         "META": {"sub": f"{len(H)} หน่วยบริการ · {reg_txt} · {len({h['p'] for h in H})} จังหวัด · ปีงบประมาณ 2569 · เทียบผลงานภายในกลุ่ม รพ. ที่เลือก",
+         "META": {"sub": f"{len(H)} หน่วยบริการ · {reg_txt} · {len({h['p'] for h in H})} จังหวัด · ปีงบประมาณ {a.fy} · เทียบผลงานภายในกลุ่ม รพ. ที่เลือก",
                   "asof": f"ข้อมูลจาก NHSO-MIS for Hospital · ประชากร UC ณ {pop_date} · ปรับปรุงข้อมูลล่าสุด {th_date}",
-                  "pop": pop_date, "months": f"{month_name(months[0])} – {month_name(months[-1])}" if months else ""}}
-    html = tpl.replace("/*__DATA__*/null", json.dumps(D, ensure_ascii=False, separators=(",", ":")))
+                  "pop": pop_date, "fy": a.fy, "months": f"{month_name(months[0])} – {month_name(months[-1])}" if months else ""}}
+    html = tpl.replace("/*__DATA__*/null", json.dumps(D, ensure_ascii=False, separators=(",", ":"))).replace("<!--YEARNAV-->", a.yearnav)
     Path(a.out).write_text(html, encoding="utf-8")
     print(f"สร้าง {a.out} ({len(html)/1e6:.2f} MB)")
 

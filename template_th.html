@@ -176,6 +176,10 @@ table.mx td.fcl{border-bottom:2px solid var(--hi)}
   <div class="asof" id="hasof"></div>
 </header>
 
+<nav class="suite yearnav" aria-label="เลือกปีงบประมาณ">
+<!--YEARNAV-->
+</nav>
+
 <nav class="suite" aria-label="แดชบอร์ดชุดวิเคราะห์">
   <a href="https://drkulapol.github.io/planfin-analysis/" target="_blank" rel="noopener">วิเคราะห์ Planfin เขต 1</a>
   <a href="https://drkulapol.github.io/mishos-rh1/" target="_blank" rel="noopener">วิเคราะห์ รายรับรายกองทุน เขต 1</a>
@@ -888,7 +892,7 @@ function printableHtml(title, tableOuterHTML, withPrintButton){
     @media print{ .btnbar{display:none} @page{ size:A4 landscape; margin:10mm } }
   </style></head><body>
   ${withPrintButton?'<div class="btnbar"><button onclick="window.print()">พิมพ์ / บันทึกเป็น PDF</button></div>':''}
-  <h2>${esc(title)}</h2><div class="meta">โรงพยาบาลรัฐทั้งประเทศ · ปีงบประมาณ 2569 · สร้างเมื่อ ${new Date().toLocaleString('th-TH')}</div>
+  <h2>${esc(title)}</h2><div class="meta">โรงพยาบาลรัฐทั้งประเทศ · ปีงบประมาณ ${D.META.fy} · สร้างเมื่อ ${new Date().toLocaleString('th-TH')}</div>
   ${tableOuterHTML}
   </body></html>`;
 }
